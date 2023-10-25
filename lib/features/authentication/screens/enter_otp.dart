@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ojembaa_courier/features/authentication/screens/upload_picture.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
@@ -159,7 +160,13 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
               SizedBox(height: context.height(.05)),
               CustomContinueButton2(
                 sidePadding: 0,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UploadPicture(),
+                      ));
+                },
                 bgColor: AppColors.accent,
               )
             ],

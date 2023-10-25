@@ -36,7 +36,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   SizedBox(height: context.height(.048)),
                   Text(
-                    "Sign in",
+                    "Sign In",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: context.width(.045),
@@ -100,7 +100,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     sidePadding: 0,
                     elevation: 0,
                     bgColor: AppColors.accent,
-                    title: "Sign in",
+                    title: "Sign In",
                   ),
                   SizedBox(height: context.height(.02)),
                   InkWell(

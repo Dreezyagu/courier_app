@@ -134,7 +134,7 @@ class CustomTextFormField extends StatelessWidget {
               errorStyle: const TextStyle(fontFamilyFallback: ["Work Sans"]),
               contentPadding: padding ??
                   EdgeInsets.symmetric(
-                    horizontal: context.width(.1),
+                    horizontal: context.width(.06),
                     vertical: context.width(.045),
                   ),
               enabledBorder: OutlineInputBorder(
