@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ojembaa_courier/features/homepage/screens/delivery_details.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
@@ -143,88 +144,100 @@ class _HomepageDeliveriesWidgetState
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return WhitePill(
-                              borderRadius: 20,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: context.width(.02)),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: context.width(.06),
-                                  vertical: context.width(.03)),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "Electronic Wall Clock",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: context.width(.048)),
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const DeliveryDetails(),
+                                  ));
+                            },
+                            child: WhitePill(
+                                borderRadius: 20,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: context.width(.02)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: context.width(.06),
+                                    vertical: context.width(.03)),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            "Electronic Wall Clock",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: context.width(.048)),
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        "10:45AM",
-                                        style: TextStyle(
-                                            fontSize: context.width(.033)),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: context.width(.03)),
-                                  Row(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Circle(
-                                              width: context.width(.05),
-                                              color: AppColors.primary,
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(3.5),
-                                                child: AssetIcon(
-                                                    icon: "express_delivery"),
-                                              )),
-                                          Text(
-                                            "  Light delivery",
-                                            style: TextStyle(
-                                                fontSize: context.width(.027)),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(width: context.width(.02)),
-                                      Row(
-                                        children: [
-                                          Circle(
-                                              width: context.width(.05),
-                                              color: AppColors.primary,
-                                              child: const Padding(
-                                                padding: EdgeInsets.all(3.5),
-                                                child: AssetIcon(
-                                                    icon: "express_delivery"),
-                                              )),
-                                          Text(
-                                            "  Express Delivery",
-                                            style: TextStyle(
-                                                fontSize: context.width(.027)),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      "3KM Away",
-                                      style: TextStyle(
-                                          color: AppColors.accent,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: context.width(.04)),
+                                        Text(
+                                          "10:45AM",
+                                          style: TextStyle(
+                                              fontSize: context.width(.033)),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ));
+                                    SizedBox(height: context.width(.03)),
+                                    Row(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Circle(
+                                                width: context.width(.05),
+                                                color: AppColors.primary,
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(3.5),
+                                                  child: AssetIcon(
+                                                      icon: "express_delivery"),
+                                                )),
+                                            Text(
+                                              "  Light delivery",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      context.width(.027)),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(width: context.width(.02)),
+                                        Row(
+                                          children: [
+                                            Circle(
+                                                width: context.width(.05),
+                                                color: AppColors.primary,
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(3.5),
+                                                  child: AssetIcon(
+                                                      icon: "express_delivery"),
+                                                )),
+                                            Text(
+                                              "  Express Delivery",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      context.width(.027)),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        "3KM Away",
+                                        style: TextStyle(
+                                            color: AppColors.accent,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: context.width(.04)),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          );
                         },
                       ),
                     )

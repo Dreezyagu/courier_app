@@ -6,6 +6,7 @@ import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
 import 'package:ojembaa_courier/utils/widgets/circle.dart';
+import 'package:ojembaa_courier/utils/widgets/custom_appbar.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_button.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_textfield.dart';
 
@@ -29,17 +30,7 @@ class _GuarantorInfoState extends ConsumerState<GuarantorInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white_background,
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              size: context.width(.06),
-            )),
-      ),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [

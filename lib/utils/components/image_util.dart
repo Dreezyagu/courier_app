@@ -23,4 +23,5 @@ class ImageUtil {
   static const icon_title_accent = "assets/images/icon_title_accent.svg";
   static const man_with_box = "assets/images/man_with_box.png";
   static const courier_offline = "assets/images/courier_offline.svg";
+  static const test_image = "assets/images/test_image.png";
 }

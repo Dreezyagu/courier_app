@@ -8,10 +8,8 @@ class CustomContinueButton2 extends StatelessWidget {
   final bool isActive;
   final Color bgColor;
   final Color? textColor;
-  final double? textSize;
-  final double? topPadding;
-  final double? sidePadding;
-  final double? elevation;
+  final double? textSize, topPadding, sidePadding, elevation, innerTopPadding;
+
   final FontWeight? fontWeight;
 
   const CustomContinueButton2(
@@ -25,7 +23,8 @@ class CustomContinueButton2 extends StatelessWidget {
       this.textSize,
       this.elevation,
       this.bgColor = AppColors.primary,
-      this.isActive = true})
+      this.isActive = true,
+      this.innerTopPadding})
       : super(key: key);
 
   @override
@@ -46,7 +45,8 @@ class CustomContinueButton2 extends StatelessWidget {
             ),
             onPressed: isActive ? onPressed : null,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: context.height(.02)),
+              padding: EdgeInsets.symmetric(
+                  vertical: innerTopPadding ?? context.width(.04)),
               child: Text(
                 title,
                 style: TextStyle(

@@ -7,6 +7,7 @@ import 'package:ojembaa_courier/features/authentication/screens/upload_picture.d
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
+import 'package:ojembaa_courier/utils/widgets/custom_appbar.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_button.dart';
 import 'package:ojembaa_courier/utils/widgets/pincode_field.dart';
 import 'package:ojembaa_courier/utils/widgets/white_pill.dart';
@@ -72,18 +73,7 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white_background,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.white_background,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              size: context.width(.06),
-            )),
-      ),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: context.width(.06)),
