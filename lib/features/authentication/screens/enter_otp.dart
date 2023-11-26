@@ -131,7 +131,7 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
                           vertical: context.height(.012)),
                       child: Text("Resend",
                           style: TextStyle(
-                            fontSize: context.width(.037),
+                            fontSize: context.width(.038),
                             fontWeight: FontWeight.w500,
                             color: AppColors.primary,
                           )),

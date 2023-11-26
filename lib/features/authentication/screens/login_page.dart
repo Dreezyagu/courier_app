@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ojembaa_courier/features/authentication/screens/signup_page.dart';
+import 'package:ojembaa_courier/features/homepage/screens/nav_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
@@ -90,12 +91,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   SizedBox(height: context.height(.01)),
                   CustomContinueButton2(
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       settings: const RouteSettings(name: "/mainPage"),
-                      //       builder: (context) => const NavPage(),
-                      //     ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            settings: const RouteSettings(name: "/mainPage"),
+                            builder: (context) => const NavPage(),
+                          ));
                     },
                     sidePadding: 0,
                     elevation: 0,
