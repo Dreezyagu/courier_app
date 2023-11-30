@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ojembaa_courier/features/homepage/screens/homepage.dart';
+import 'package:ojembaa_courier/features/payments/screens/payments_page.dart';
+import 'package:ojembaa_courier/features/profile/screens/profile_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
@@ -79,9 +81,11 @@ class _NavPageState extends State<NavPage> {
     if (selectedIndex == 0) {
       return const Homepage();
     } else if (selectedIndex == 1) {
-      return const Homepage();
+      return const PaymentsPage();
     } else if (selectedIndex == 2) {
       return const Homepage();
+    } else if (selectedIndex == 3) {
+      return const ProfilePage();
     } else {
       return const Homepage();
     }

@@ -39,21 +39,40 @@ flutter:
   fonts:
     - family: QanelasSoft
       fonts:
-        - asset: assets/fonts/QanelasSoft-Thin.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-Thin.otf
           weight: 100
-        - asset: assets/fonts/QanelasSoft-ExtraLight.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-ExtraLight.otf
           weight: 200
-        - asset: assets/fonts/QanelasSoft-Light.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-Light.otf
           weight: 300
-        - asset: assets/fonts/QanelasSoft-Regular.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-Regular.otf
           weight: 400
-        - asset: assets/fonts/QanelasSoft-Medium.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-Medium.otf
           weight: 500
-        - asset: assets/fonts/QanelasSoft-SemiBold.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-SemiBold.otf
           weight: 600
-        - asset: assets/fonts/QanelasSoft-Bold.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-Bold.otf
           weight: 700
-        - asset: assets/fonts/QanelasSoft-ExtraBold.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-ExtraBold.otf
           weight: 800
-        - asset: assets/fonts/QanelasSoft-Black.otf
+        - asset: assets/fonts/QanelasSoft/QanelasSoft-Black.otf
           weight: 900
+
+    - family: Work Sans
+      fonts:
+        - asset: assets/fonts/WorkSans/WorkSans-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/WorkSans/WorkSans-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/WorkSans/WorkSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/WorkSans/WorkSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/WorkSans/WorkSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/WorkSans/WorkSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/WorkSans/WorkSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/WorkSans/WorkSans-Bold.ttf
+          weight: 800
