@@ -55,13 +55,13 @@ class _CustomDropDownFormFieldState<T>
           height: widget.height,
           child: DropdownButtonFormField<T?>(
             style: TextStyle(
-              color: AppColors.hintColor,
-              fontSize: widget.fontSize ?? context.width(.04),
-              fontWeight: FontWeight.w400,
+              color: AppColors.black,
+              fontSize: widget.fontSize ?? context.width(.037),
             ),
             value: widget.value,
             icon: const Icon(Icons.keyboard_arrow_down),
             isExpanded: widget.isExpanded,
+            dropdownColor: AppColors.white,
             hint: Text(widget.hintText ?? '',
                 style: TextStyle(
                     fontFamily: "QanelasSoft",

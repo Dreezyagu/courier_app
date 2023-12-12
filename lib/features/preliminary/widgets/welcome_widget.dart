@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ojembaa_courier/features/authentication/screens/login_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
@@ -37,7 +36,7 @@ class WelcomeWidget extends StatelessWidget {
                   fontSize: context.width(.04), fontWeight: FontWeight.w400),
             ),
             SizedBox(height: context.height(.03)),
-            CustomContinueButton2(
+            CustomContinueButton(
               onPressed: () {
                 Navigator.push(
                     context,
