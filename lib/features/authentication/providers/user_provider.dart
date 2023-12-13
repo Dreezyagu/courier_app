@@ -9,9 +9,7 @@ class UserProvider extends StateNotifier<BaseNotifier<UserModel>> {
   void getDetails(
       {Function(UserModel)? onSuccess, Function(String)? onError}) async {
     state = BaseNotifier.setLoading();
-
     final data2 = await AuthServices.getDetails();
-
     if (data2.success is UserModel) {
       state = BaseNotifier.setDone<UserModel>(data2.success!);
       if (onSuccess != null) {

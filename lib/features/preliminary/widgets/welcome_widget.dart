@@ -41,6 +41,7 @@ class WelcomeWidget extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
+                      settings: const RouteSettings(name: "/loginPage"),
                       builder: (context) => const LoginPage(),
                     ));
               },

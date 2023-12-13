@@ -14,7 +14,7 @@ class UpdateProfileProvider extends StateNotifier<BaseNotifier<UserModel>> {
       Function(String)? onError}) async {
     state = BaseNotifier.setLoading();
     final data = await AuthServices.updateProfile(payload, id);
-    if (data.success is String) {
+    if (data.success is UserModel) {
       state = BaseNotifier.setDone<UserModel>(data.success!);
       if (onSuccess != null) {
         onSuccess();

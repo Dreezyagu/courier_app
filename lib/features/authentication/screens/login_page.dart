@@ -4,6 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ojembaa_courier/features/authentication/providers/get_banks_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/signin_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
+import 'package:ojembaa_courier/features/authentication/screens/enter_bank_details.dart';
+import 'package:ojembaa_courier/features/authentication/screens/guarantor_info.dart';
+import 'package:ojembaa_courier/features/authentication/screens/ownership_proof.dart';
 import 'package:ojembaa_courier/features/authentication/screens/signup_page.dart';
 import 'package:ojembaa_courier/features/authentication/screens/upload_picture.dart';
 import 'package:ojembaa_courier/features/homepage/screens/nav_page.dart';
@@ -23,10 +26,8 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController emailController =
-      TextEditingController(text: "ifeanyi@mailinator.com");
-  final TextEditingController passwordController =
-      TextEditingController(text: "Password@123");
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool obscure = true;
 
@@ -138,16 +139,38 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       return;
                                     }
 
-                                    ref
-                                        .read(getBanksProvider.notifier)
-                                        .getBanks();
-
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //       builder: (context) =>
-                                    //           const EnterBankDetails(),
-                                    //     ));
+                                    if (user.tools == null) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const OwnershipProof(),
+                                          ));
+                                      return;
+                                    }
+                                    if (user.bankInformation == null ||
+                                        user.bankInformation!.isEmpty) {
+                                      ref
+                                          .read(getBanksProvider.notifier)
+                                          .getBanks();
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const EnterBankDetails(),
+                                          ));
+                                      return;
+                                    }
+                                    if (user.guarantor == null ||
+                                        user.bankInformation!.isEmpty) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const GuarantorInfo(),
+                                          ));
+                                      return;
+                                    }
 
                                     Navigator.push(
                                         context,

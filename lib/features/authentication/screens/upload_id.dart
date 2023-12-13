@@ -39,9 +39,9 @@ class _UploadIDState extends ConsumerState<UploadID> {
   File? frontFile, backFile;
   final List<DocumentType> documentTypes = [
     DocumentType("Driver's License", "DRIVERS_LICENCE"),
-    DocumentType("National ID Card or NIN Slip", "IDENTITY_CARD"),
-    DocumentType("International Passport", "PASSPORT"),
-    DocumentType("Voter's Card", "VOTER_ID"),
+    DocumentType("National ID Card or NIN Slip", "NIN"),
+    DocumentType("International Passport", "INTERNATIONAL_PASSPORT"),
+    // DocumentType("Voter's Card", "VOTER_ID"),
   ];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();

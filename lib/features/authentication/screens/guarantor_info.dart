@@ -188,6 +188,8 @@ class _GuarantorInfoState extends ConsumerState<GuarantorInfo> {
                           "email": email.text.trim()
                         },
                         onSuccess: () {
+                          // Navigator.popUntil(
+                          //     context, ModalRoute.withName("/mainPage"));
                           Navigator.push(
                               context,
                               MaterialPageRoute(

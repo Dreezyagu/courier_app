@@ -17,7 +17,7 @@ class AuthServices {
   static const verifyOtpUrl = "auth/verify-otp";
   static const resendOtpUrl = "auth/resend-otp";
   static const uploadAssetUrl = "assets/upload";
-  static const updateProfileUrl = "users/update/";
+  static const updateProfileUrl = "users/update";
   static const addVehicleUrl = "couriers/delivery-tool";
   static const bankInfoUrl = "couriers/bank-info";
   static const guarantorUrl = "couriers/guarantor";

@@ -190,7 +190,7 @@ class _EnterBankDetailsState extends ConsumerState<EnterBankDetails> {
                   controller: accountName,
                   hintText: "Account holder",
                   validator: Validators.notEmpty(),
-                  fillColor: const Color(0xffFFF5E1),
+                  // fillColor: const Color(0xffFFF5E1),
                 ),
                 SizedBox(height: context.height(.015)),
                 CustomTextFormField(

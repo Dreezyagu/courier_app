@@ -26,7 +26,7 @@ class SignInProvider extends StateNotifier<BaseNotifier<UserModel>> {
       if (data2.success is UserModel) {
         state = BaseNotifier.setDone<UserModel>(data2.success!);
         if (onSuccess != null) {
-          onSuccess(data2.success!);
+           onSuccess(data2.success!);
         }
       } else {
         state = BaseNotifier.setError(data2.error ?? "An error ocurred");

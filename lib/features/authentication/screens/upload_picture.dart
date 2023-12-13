@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ojembaa_courier/features/authentication/providers/signin_provider.dart';
-import 'package:ojembaa_courier/features/authentication/providers/signup_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/upload_asset_provider.dart';
+import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
 import 'package:ojembaa_courier/features/authentication/screens/upload_id.dart';
 import 'package:ojembaa_courier/features/authentication/widgets/create_account_widgets.dart';
 import 'package:ojembaa_courier/features/authentication/widgets/image_picker_widget.dart';
@@ -52,7 +51,7 @@ class _UploadPictureState extends ConsumerState<UploadPicture> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hi ${ref.watch(signUpProvider).data?.firstName ?? ref.watch(signInProvider).data?.firstName}",
+                "Hi ${ref.watch(userProvider).data?.firstName}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: context.width(.062),

@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ojembaa_courier/features/authentication/providers/otp_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/signin_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/signup_provider.dart';
+import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
 import 'package:ojembaa_courier/features/authentication/screens/upload_picture.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
@@ -76,8 +77,7 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
 
   @override
   Widget build(BuildContext context) {
-    final email =
-        "${ref.watch(signUpProvider).data?.email ?? ref.watch(signInProvider).data?.email}";
+    final email = ref.watch(signUpProvider).data?.email ?? "";
     return Scaffold(
       backgroundColor: AppColors.white_background,
       appBar: const CustomAppBar(),
@@ -185,13 +185,16 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
                   sidePadding: 0,
                   onPressed: () {
                     reader.verifyOtp(
-                      email: ref.watch(signUpProvider).data?.email ??
-                          ref.watch(signInProvider).data!.email!,
+                      email: ref.watch(signUpProvider).data?.email ?? "",
                       otp: otpController.text,
                       onSuccess: () {
-                        ref
-                            .read(signInProvider.notifier)
-                            .signIn(email: email, password: widget.password);
+                        ref.read(signInProvider.notifier).signIn(
+                              email: email,
+                              password: widget.password,
+                              onSuccess: (_) {
+                                ref.read(userProvider.notifier).getDetails();
+                              },
+                            );
                         Navigator.push(
                             context,
                             MaterialPageRoute(
