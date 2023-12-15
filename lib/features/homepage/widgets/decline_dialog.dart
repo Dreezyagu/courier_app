@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
@@ -56,7 +55,7 @@ class _DeclineDialogState extends State<DeclineDialog> {
                       }))
                   .toList(),
             ),
-            CustomContinueButton2(
+            CustomContinueButton(
               onPressed: () {},
               topPadding: context.width(.06),
               elevation: 0,

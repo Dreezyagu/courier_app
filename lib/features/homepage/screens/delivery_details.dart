@@ -48,7 +48,7 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
             Row(
               children: [
                 Expanded(
-                    child: CustomContinueButton2(
+                    child: CustomContinueButton(
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -62,7 +62,7 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
                   bgColor: const Color(0xff707070),
                 )),
                 Expanded(
-                    child: CustomContinueButton2(
+                    child: CustomContinueButton(
                   onPressed: () {},
                   elevation: 0,
                   innerTopPadding: context.width(.035),

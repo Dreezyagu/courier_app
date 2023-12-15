@@ -8,22 +8,29 @@ import 'package:ojembaa_courier/utils/widgets/white_pill.dart';
 class AddPictureWidget extends StatelessWidget {
   const AddPictureWidget({
     super.key,
+    required this.isLoading,
   });
+
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return WhitePill(
         width: double.infinity,
-        height: context.width(.7),
+        height: context.width(.83),
         borderRadius: 20,
         color: AppColors.primary.withOpacity(.18),
         boxBorder: Border.all(color: AppColors.primary),
-        child: Padding(
-          padding: EdgeInsets.all(context.height(.13)),
-          child: SvgPicture.asset(
-            ImageUtil.add_picture,
-          ),
-        ));
+        child: isLoading
+            ? Padding(
+                padding: EdgeInsets.all(context.height(.17)),
+                child: const CircularProgressIndicator())
+            : Padding(
+                padding: EdgeInsets.all(context.height(.15)),
+                child: SvgPicture.asset(
+                  ImageUtil.add_picture,
+                ),
+              ));
   }
 }
 

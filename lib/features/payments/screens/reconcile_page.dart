@@ -71,9 +71,9 @@ class _ReconcilePageState extends ConsumerState<ReconcilePage> {
               ),
             ),
             SizedBox(height: context.width(.02)),
-            const AddPictureWidget(),
+            const AddPictureWidget(isLoading: false),
             SizedBox(height: context.width(.06)),
-            CustomContinueButton2(
+            CustomContinueButton(
               onPressed: () {},
               sidePadding: 0,
             )

@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ojembaa_courier/features/authentication/providers/otp_provider.dart';
+import 'package:ojembaa_courier/features/authentication/providers/signin_provider.dart';
+import 'package:ojembaa_courier/features/authentication/providers/signup_provider.dart';
+import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
 import 'package:ojembaa_courier/features/authentication/screens/upload_picture.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
@@ -10,10 +14,12 @@ import 'package:ojembaa_courier/utils/components/image_util.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_appbar.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_button.dart';
 import 'package:ojembaa_courier/utils/widgets/pincode_field.dart';
+import 'package:ojembaa_courier/utils/widgets/snackbar.dart';
 import 'package:ojembaa_courier/utils/widgets/white_pill.dart';
 
 class EnterOTP extends ConsumerStatefulWidget {
-  const EnterOTP({super.key});
+  final String password;
+  const EnterOTP(this.password, {super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _EnterOTPState();
@@ -25,7 +31,7 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
   bool enableResend = false;
 
   Timer? timer;
-  Duration myDuration = const Duration(seconds: 120);
+  Duration myDuration = const Duration(minutes: 5);
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
@@ -39,7 +45,7 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
   // Step 5
   void resetTimer() {
     stopTimer();
-    setState(() => myDuration = const Duration(minutes: 10));
+    setState(() => myDuration = const Duration(minutes: 5));
   }
 
   void setCountDown() {
@@ -71,6 +77,7 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
 
   @override
   Widget build(BuildContext context) {
+    final email = ref.watch(signUpProvider).data?.email ?? "";
     return Scaffold(
       backgroundColor: AppColors.white_background,
       appBar: const CustomAppBar(),
@@ -95,15 +102,15 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
               SizedBox(height: context.height(.015)),
               Text.rich(
                 TextSpan(
-                  children: const [
-                    TextSpan(text: "We sent you a"),
-                    TextSpan(
+                  children: [
+                    const TextSpan(text: "We sent you a"),
+                    const TextSpan(
                         text: " One Time Password\n",
                         style: TextStyle(fontWeight: FontWeight.w700)),
-                    TextSpan(text: "on this number"),
+                    const TextSpan(text: "on this email"),
                     TextSpan(
-                        text: " 070***343",
-                        style: TextStyle(fontWeight: FontWeight.w700))
+                        text: " $email",
+                        style: const TextStyle(fontWeight: FontWeight.w700))
                   ],
                   style: TextStyle(
                     fontSize: context.width(.037),
@@ -114,18 +121,41 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
               ),
               SizedBox(height: context.height(.03)),
               enableResend
-                  ? WhitePill(
-                      color: const Color(0xffF4F2EA),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: context.width(.04),
-                          vertical: context.height(.012)),
-                      child: Text("Resend",
-                          style: TextStyle(
-                            fontSize: context.width(.038),
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.primary,
-                          )),
-                    )
+                  ? Consumer(builder: (context, ref, child) {
+                      final reader = ref.read(otpProvider.notifier);
+                      return InkWell(
+                        onTap: () {
+                          reader.resendOtp(
+                            email: email,
+                            onError: (p0) {
+                              CustomSnackbar.showErrorSnackBar(context,
+                                  message: p0);
+                            },
+                            onSuccess: () {
+                              setState(() {
+                                resetTimer();
+                                startTimer();
+                                enableResend = false;
+                              });
+                              CustomSnackbar.showSuccessSnackBar(context,
+                                  message: "OTP sent successfully");
+                            },
+                          );
+                        },
+                        child: WhitePill(
+                          color: const Color(0xffF4F2EA),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: context.width(.04),
+                              vertical: context.height(.012)),
+                          child: Text("Resend",
+                              style: TextStyle(
+                                fontSize: context.width(.038),
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primary,
+                              )),
+                        ),
+                      );
+                    })
                   : Text.rich(
                       TextSpan(
                         style: TextStyle(
@@ -148,17 +178,50 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
                 length: 4,
               ),
               SizedBox(height: context.height(.05)),
-              CustomContinueButton2(
-                sidePadding: 0,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const UploadPicture(),
-                      ));
-                },
-                bgColor: AppColors.accent,
-              )
+              Consumer(builder: (context, ref, child) {
+                final data = ref.watch(otpProvider);
+                final reader = ref.read(otpProvider.notifier);
+                return CustomContinueButton(
+                  sidePadding: 0,
+                  onPressed: () {
+                    reader.verifyOtp(
+                      email: ref.watch(signUpProvider).data?.email ?? "",
+                      otp: otpController.text,
+                      onSuccess: () {
+                        ref.read(signInProvider.notifier).signIn(
+                              email: email,
+                              password: widget.password,
+                              onSuccess: (_) {
+                                ref.read(userProvider.notifier).getDetails(
+                                  onSuccess: (_) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const UploadPicture(),
+                                        ));
+                                  },
+                                  onError: (p0) {
+                                    CustomSnackbar.showErrorSnackBar(context,
+                                        message: p0);
+                                  },
+                                );
+                              },
+                              onError: (p0) {
+                                CustomSnackbar.showErrorSnackBar(context,
+                                    message: p0);
+                              },
+                            );
+                      },
+                      onError: (p0) {
+                        CustomSnackbar.showErrorSnackBar(context, message: p0);
+                      },
+                    );
+                  },
+                  isActive: !data.isLoading,
+                  bgColor: AppColors.accent,
+                );
+              })
             ],
           ),
         ),
