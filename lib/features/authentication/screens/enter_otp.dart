@@ -192,14 +192,26 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
                               email: email,
                               password: widget.password,
                               onSuccess: (_) {
-                                ref.read(userProvider.notifier).getDetails();
+                                ref.read(userProvider.notifier).getDetails(
+                                  onSuccess: (_) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const UploadPicture(),
+                                        ));
+                                  },
+                                  onError: (p0) {
+                                    CustomSnackbar.showErrorSnackBar(context,
+                                        message: p0);
+                                  },
+                                );
+                              },
+                              onError: (p0) {
+                                CustomSnackbar.showErrorSnackBar(context,
+                                    message: p0);
                               },
                             );
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const UploadPicture(),
-                            ));
                       },
                       onError: (p0) {
                         CustomSnackbar.showErrorSnackBar(context, message: p0);

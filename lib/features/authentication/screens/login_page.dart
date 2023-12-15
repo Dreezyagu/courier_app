@@ -126,59 +126,66 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       CustomSnackbar.showErrorSnackBar(context,
                                           message: p0),
                                   onSuccess: (user) {
-                                    ref
-                                        .read(userProvider.notifier)
-                                        .getDetails();
-                                    if (user.profilePhoto == null) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const UploadPicture(),
-                                          ));
-                                      return;
-                                    }
+                                    ref.read(userProvider.notifier).getDetails(
+                                          onError: (p0) =>
+                                              CustomSnackbar.showErrorSnackBar(
+                                                  context,
+                                                  message: p0),
+                                          onSuccess: (p0) {
+                                            if (user.profilePhoto == null) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const UploadPicture(),
+                                                  ));
+                                              return;
+                                            }
 
-                                    if (user.tools == null) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const OwnershipProof(),
-                                          ));
-                                      return;
-                                    }
-                                    if (user.bankInformation == null ||
-                                        user.bankInformation!.isEmpty) {
-                                      ref
-                                          .read(getBanksProvider.notifier)
-                                          .getBanks();
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const EnterBankDetails(),
-                                          ));
-                                      return;
-                                    }
-                                    if (user.guarantor == null ||
-                                        user.bankInformation!.isEmpty) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const GuarantorInfo(),
-                                          ));
-                                      return;
-                                    }
+                                            if (user.tools == null) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const OwnershipProof(),
+                                                  ));
+                                              return;
+                                            }
+                                            if (user.bankInformation == null ||
+                                                user.bankInformation!.isEmpty) {
+                                              ref
+                                                  .read(
+                                                      getBanksProvider.notifier)
+                                                  .getBanks();
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const EnterBankDetails(),
+                                                  ));
+                                              return;
+                                            }
+                                            if (user.guarantor == null ||
+                                                user.bankInformation!.isEmpty) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const GuarantorInfo(),
+                                                  ));
+                                              return;
+                                            }
 
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          settings: const RouteSettings(
-                                              name: "/mainPage"),
-                                          builder: (context) => const NavPage(),
-                                        ));
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  settings: const RouteSettings(
+                                                      name: "/mainPage"),
+                                                  builder: (context) =>
+                                                      const NavPage(),
+                                                ));
+                                          },
+                                        );
                                   },
                                   email: emailController.text.trim(),
                                   password: passwordController.text.trim());
