@@ -55,7 +55,7 @@ class AuthServices {
       }
       return (success: null, error: error?.message ?? "An error occured");
     } catch (e) {
-      return (success: null, error: "An error occured");
+      return (success: null, error: "An error occured");  
     }
   }
 

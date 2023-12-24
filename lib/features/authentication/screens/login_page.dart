@@ -9,6 +9,7 @@ import 'package:ojembaa_courier/features/authentication/screens/guarantor_info.d
 import 'package:ojembaa_courier/features/authentication/screens/ownership_proof.dart';
 import 'package:ojembaa_courier/features/authentication/screens/signup_page.dart';
 import 'package:ojembaa_courier/features/authentication/screens/upload_picture.dart';
+import 'package:ojembaa_courier/features/homepage/providers/get_location_provider.dart';
 import 'package:ojembaa_courier/features/homepage/screens/nav_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
@@ -26,8 +27,10 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController =
+      TextEditingController(text: "ifeanyi@mailinator.com");
+  final TextEditingController passwordController =
+      TextEditingController(text: "Password@123");
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool obscure = true;
 
@@ -175,7 +178,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                                   ));
                                               return;
                                             }
-
+                                            ref
+                                                .read(getLocationProvider
+                                                    .notifier)
+                                                .getCurrentLocation();
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

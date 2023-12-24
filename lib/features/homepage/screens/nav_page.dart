@@ -24,12 +24,13 @@ class _NavPageState extends State<NavPage> {
     return Consumer(builder: (context, ref, child) {
       final watcher = ref.watch(userProvider);
       return Scaffold(
-        body: WillPopScope(
-            onWillPop: () => Future.value(false),
+        body: PopScope(
+            canPop: false,
             child: Stack(
               children: [
                 getBody(),
-                if (watcher.data?.isActivated == false)
+                //TODO
+                if (watcher.data?.isActivated == true)
                   Container(
                     height: double.infinity,
                     width: double.infinity,
