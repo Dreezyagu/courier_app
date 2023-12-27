@@ -92,7 +92,7 @@ class _EnterBankDetailsState extends ConsumerState<EnterBankDetails> {
 
                   if (data.data != null) {
                     return DropdownSearch<BanksModel>(
-                      items: data.data,
+                      items: data.data!,
                       onChanged: (value) {
                         if (value != null) {
                           bank = value;
@@ -119,53 +119,55 @@ class _EnterBankDetailsState extends ConsumerState<EnterBankDetails> {
                           //   }
                         }
                       },
-                      itemAsString: (item) => item?.name ?? "",
-                      showSearchBox: true,
-                      mode: Mode.MENU,
-                      maxHeight: context.height(.5),
-                      searchFieldProps: TextFieldProps(
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: context.width(.03),
-                                vertical: context.width(.035),
-                              ),
-                              hintText: "Search Bank",
-                              hintStyle: const TextStyle(
-                                color: AppColors.hintColor,
-                              ),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5)),
-                              prefixIcon: const Icon(
-                                Icons.search,
-                              ))),
-                      dropdownSearchDecoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: context.width(.06),
-                          vertical: context.width(.045),
+                      itemAsString: (item) => item.name ?? "",
+                      dropdownDecoratorProps: DropDownDecoratorProps(
+                        dropdownSearchDecoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: context.width(.06),
+                            vertical: context.width(.045),
+                          ),
+                          label: const Text(
+                            "Select Bank",
+                            style: TextStyle(color: AppColors.hintColor),
+                          ),
+                          labelStyle: const TextStyle(
+                            color: AppColors.red,
+                            fontFamilyFallback: ["Work Sans"],
+                          ),
+                          fillColor: AppColors.white,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(
+                                  width: .5, color: Colors.black38)),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(
+                                  width: .5, color: Colors.black38)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(
+                                  width: .5, color: Colors.black38)),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
                         ),
-                        label: const Text(
-                          "Select Bank",
-                          style: TextStyle(color: AppColors.hintColor),
-                        ),
-                        labelStyle: const TextStyle(
-                          color: AppColors.red,
-                          fontFamilyFallback: ["Work Sans"],
-                        ),
-                        fillColor: AppColors.white,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: const BorderSide(
-                                width: .5, color: Colors.black38)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: const BorderSide(
-                                width: .5, color: Colors.black38)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: const BorderSide(
-                                width: .5, color: Colors.black38)),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                      ),
+                      popupProps: PopupProps.menu(
+                        showSearchBox: true,
+                        searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: context.width(.03),
+                                  vertical: context.width(.035),
+                                ),
+                                hintText: "Search Bank",
+                                hintStyle: const TextStyle(
+                                  color: AppColors.hintColor,
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5)),
+                                prefixIcon: const Icon(
+                                  Icons.search,
+                                ))),
                       ),
                       dropdownBuilder: (context, selectedItem) => Text(
                         selectedItem?.name ?? "",
