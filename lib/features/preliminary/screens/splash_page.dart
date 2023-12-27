@@ -16,7 +16,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    NotificationsUtil().setUpFirebaseMessaging();
+    NotificationsUtil().setUpFirebaseMessaging(context);
     Future.delayed(
       const Duration(seconds: 3),
       () {
