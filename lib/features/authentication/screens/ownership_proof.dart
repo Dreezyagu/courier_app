@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ojembaa_courier/features/authentication/providers/get_banks_provider.dart'; 
+import 'package:ojembaa_courier/features/authentication/providers/get_banks_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/upload_asset_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/vehicle_provider.dart';
@@ -73,7 +73,7 @@ class _OwnershipProofState extends ConsumerState<OwnershipProof> {
                       color: AppColors.primary,
                       child: Padding(
                         padding: const EdgeInsets.all(6.0),
-                        child: SvgPicture.asset(ImageUtil.car),
+                        child: SvgPicture.asset(ImageUtil.medium_delivery),
                       )),
                   SizedBox(width: context.width(.02)),
                   Text(

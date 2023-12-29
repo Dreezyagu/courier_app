@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ojembaa_courier/features/authentication/models/user_model.dart';
 import 'package:ojembaa_courier/features/authentication/services/auth_services.dart';
@@ -28,7 +26,6 @@ class SignInProvider extends StateNotifier<BaseNotifier<UserModel>> {
       if (data2.success is UserModel) {
         state = BaseNotifier.setDone<UserModel>(data2.success!);
         final fcmToken = await StorageHelper.getString(StorageKeys.fcmToken);
-        log(fcmToken.toString());
         await AuthServices.updateProfile(
             {"fcmToken": fcmToken}, data2.success!.id!);
 

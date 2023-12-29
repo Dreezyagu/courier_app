@@ -3,7 +3,7 @@ class ImageUtil {
 
   static const email = "assets/icons/email.svg";
   static const big_icon = "assets/icons/big_icon.svg";
-  static const car = "assets/icons/car.svg";
+  static const medium_delivery = "assets/icons/medium_delivery.svg";
   static const password = "assets/icons/password.svg";
   static const camera = "assets/icons/camera.svg";
   static const add_picture = "assets/icons/add_picture.svg";

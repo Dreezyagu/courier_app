@@ -61,7 +61,7 @@ class CourierInfoWidget extends StatelessWidget {
                       title: "Est. distance covered",
                     ),
                     CourierRowInfo(
-                      icon: "car",
+                      icon: "medium_delivery",
                       value: "37",
                       title: "Deliveries",
                     ),

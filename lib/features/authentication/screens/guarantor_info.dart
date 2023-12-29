@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/vehicle_provider.dart';
 import 'package:ojembaa_courier/features/authentication/widgets/create_account_widgets.dart';
+import 'package:ojembaa_courier/features/homepage/providers/get_requests_provider.dart';
 import 'package:ojembaa_courier/features/homepage/screens/nav_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
@@ -144,7 +145,7 @@ class _GuarantorInfoState extends ConsumerState<GuarantorInfo> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: context.width(.03)),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Checkbox(
                       value: check,
@@ -188,8 +189,7 @@ class _GuarantorInfoState extends ConsumerState<GuarantorInfo> {
                           "email": email.text.trim()
                         },
                         onSuccess: () {
-                          // Navigator.popUntil(
-                          //     context, ModalRoute.withName("/mainPage"));
+                          ref.read(getRequestsProvider.notifier).getRequests();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
