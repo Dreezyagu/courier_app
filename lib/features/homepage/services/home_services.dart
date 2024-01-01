@@ -141,4 +141,27 @@ class HomeServices {
       return (success: null, error: "An error occured");
     }
   }
+
+  static Future<({String? success, String? error})> updateStatus(
+      String id, String status) async {
+    try {
+      final response = await dio
+          .patch("${baseUrl}deliveries/$id/update", body: {"status": status});
+
+      if (response.data["status"] == "success") {
+        return (success: response.data["message"].toString(), error: null);
+      } else {
+        final error = ErrorModel.fromMap(response.data);
+        return (success: null, error: error.message ?? "An error occured");
+      }
+    } on DioException catch (e) {
+      ErrorModel? error;
+      if (e.response != null) {
+        error = ErrorModel.fromMap(e.response?.data);
+      }
+      return (success: null, error: error?.message ?? "An error occured");
+    } catch (e) {
+      return (success: null, error: "An error occured");
+    }
+  }
 }

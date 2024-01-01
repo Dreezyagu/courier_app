@@ -4,6 +4,7 @@ import 'package:ojembaa_courier/features/homepage/model/delivery_model.dart';
 import 'package:ojembaa_courier/features/homepage/providers/accept_delivery_provider.dart';
 import 'package:ojembaa_courier/features/homepage/providers/get_requests_provider.dart';
 import 'package:ojembaa_courier/features/homepage/providers/get_single_request_provider.dart';
+import 'package:ojembaa_courier/features/homepage/providers/update_status_provider.dart';
 import 'package:ojembaa_courier/features/homepage/widgets/decline_dialog.dart';
 import 'package:ojembaa_courier/features/homepage/widgets/delivery_summary_widget.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
@@ -71,6 +72,7 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
                   margin: EdgeInsets.symmetric(vertical: context.width(.05)),
                   color: const Color(0xffFEE4B1),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "Delivery Status",
@@ -82,48 +84,104 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
                       SizedBox(
                         width: context.width(.04),
                       ),
-                      Expanded(
-                        child: CustomDropDownFormField<String>(
-                            items: ["SCHEDULED", "ENROUTE_PICKUP"]
-                                .map((e) => DropdownMenuItem<String>(
-                                      value: e,
-                                      child: Row(
-                                        children: [
-                                          Circle(
-                                              color: e == "ENROUTE_PICKUP"
-                                                  ? AppColors.white
-                                                  : e == "DELIVERED"
-                                                      ? AppColors.green
-                                                      : AppColors.red,
-                                              width: context.width(.015),
-                                              child: const SizedBox.shrink()),
-                                          Text(
-                                            "  ${e.replaceFirst("_", " ").toLowerCase().capitalizeAllWord()}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.white,
-                                                fontSize: context.width(.037)),
-                                          ),
-                                        ],
-                                      ),
-                                    ))
-                                .toList(),
-                            value: deliveryStatus,
-                            borderRadius: 10,
-                            textColor: AppColors.accent,
-                            borderColor: AppColors.accent,
-                            fillColor: AppColors.accent,
-                            dropdownColor: AppColors.accent,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: context.width(.03),
-                              vertical: context.width(.025),
-                            ),
-                            onChanged: (String? val) {
-                              setState(() {
-                                deliveryStatus = val;
-                              });
-                            }),
-                      )
+                      Consumer(builder: (context, ref, child) {
+                        final data = ref.watch(updateStatusProvider);
+                        final data2 = ref.watch(getSingleRequestProvider);
+
+                        final reader = ref.watch(updateStatusProvider.notifier);
+
+                        if (data.isLoading || data2.isLoading) {
+                          return SizedBox(
+                              height: context.width(.07),
+                              width: context.width(.07),
+                              child: const CircularProgressIndicator());
+                        }
+                        return Expanded(
+                          child: CustomDropDownFormField<String>(
+                              items: [
+                                "SCHEDULED",
+                                "ENROUTE_PICKUP",
+                                "IN_PROGRESS",
+                                "DELIVERED"
+                              ]
+                                  .map((e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Row(
+                                          children: [
+                                            Circle(
+                                                color: e == "ENROUTE_PICKUP"
+                                                    ? AppColors.white
+                                                    : e == "DELIVERED"
+                                                        ? AppColors.green
+                                                        : e == "IN_PROGRESS"
+                                                            ? AppColors.primary
+                                                            : AppColors.red,
+                                                width: context.width(.015),
+                                                child: const SizedBox.shrink()),
+                                            Text(
+                                              "  ${e.replaceFirst("_", " ").toLowerCase().capitalizeAllWord()}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.white,
+                                                  fontSize:
+                                                      context.width(.037)),
+                                            ),
+                                          ],
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: deliveryStatus,
+                              borderRadius: 10,
+                              textColor: AppColors.accent,
+                              borderColor: AppColors.accent,
+                              fillColor: AppColors.accent,
+                              dropdownColor: AppColors.accent,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: context.width(.03),
+                                vertical: context.width(.025),
+                              ),
+                              onChanged: (String? val) {
+                                if (deliveryStatus != val) {
+                                  reader.acceptDelivery(
+                                    id: widget.delivery.id!,
+                                    status: val!,
+                                    onSuccess: () {
+                                      ref
+                                          .read(getRequestsProvider.notifier)
+                                          .getRequests();
+                                      ref
+                                          .read(
+                                              getSingleRequestProvider.notifier)
+                                          .getSingleRequest(
+                                        widget.delivery.id!,
+                                        onSuccess: (delivery) {
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DeliveryDetails(
+                                                        delivery: delivery,
+                                                        distance:
+                                                            widget.distance),
+                                              ));
+                                        },
+                                        onError: (p0) {
+                                          CustomSnackbar.showErrorSnackBar(
+                                              context,
+                                              message: p0);
+                                        },
+                                      );
+                                    },
+                                    onError: (p0) =>
+                                        CustomSnackbar.showErrorSnackBar(
+                                            context,
+                                            message: p0),
+                                  );
+                                }
+                              }),
+                        );
+                      })
                     ],
                   )),
               SizedBox(height: context.width(.04)),

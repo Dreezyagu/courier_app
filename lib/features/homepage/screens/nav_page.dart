@@ -63,7 +63,9 @@ class _NavPageState extends State<NavPage> {
                   )
               ],
             )),
-        bottomNavigationBar: watcher.data?.isActivated == false
+
+        // TODO
+        bottomNavigationBar: watcher.data?.isActivated == true
             ? null
             : BottomNavigationBar(
                 currentIndex: selectedIndex,

@@ -220,13 +220,15 @@ class _HomepageDeliveriesWidgetState
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             final delivery = data[index];
+
                             return InkWell(
                               onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          DeliveryDetails(delivery: delivery, distance: distance),
+                                      builder: (context) => DeliveryDetails(
+                                          delivery: delivery,
+                                          distance: distance),
                                     ));
                               },
                               child: WhitePill(
@@ -285,7 +287,7 @@ class _HomepageDeliveriesWidgetState
                                                 "  ${delivery.package?.weight?.toLowerCase().capitalize()} delivery",
                                                 style: TextStyle(
                                                     fontSize:
-                                                        context.width(.027)),
+                                                        context.width(.03)),
                                               ),
                                             ],
                                           ),
@@ -307,37 +309,104 @@ class _HomepageDeliveriesWidgetState
                                                 "  ${delivery.deliveryMode?.capitalize()} Delivery",
                                                 style: TextStyle(
                                                     fontSize:
-                                                        context.width(.027)),
+                                                        context.width(.03)),
                                               ),
                                             ],
                                           ),
                                         ],
                                       ),
-                                      Consumer(builder: (context, ref, child) {
-                                        final data =
-                                            ref.watch(getLocationProvider).data;
+                                      if (delivery.status
+                                              ?.toLowerCase()
+                                              .trim() ==
+                                          "scheduled")
+                                        Consumer(
+                                            builder: (context, ref, child) {
+                                          final data = ref
+                                              .watch(getLocationProvider)
+                                              .data;
 
-                                        if (data != null) {
-                                          distance = Utility.calculateDistance(
-                                              data.latitude,
-                                              data.longitude,
-                                              double.parse(delivery.pickupLat!),
-                                              double.parse(
-                                                  delivery.pickupLog!));
-                                          return Align(
-                                            alignment: Alignment.centerRight,
-                                            child: Text(
-                                              "${distance?.round()}KM Away"
-                                                  .commalise(),
-                                              style: TextStyle(
-                                                  color: AppColors.accent,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: context.width(.04)),
+                                          if (data != null) {
+                                            distance =
+                                                Utility.calculateDistance(
+                                                    data.latitude,
+                                                    data.longitude,
+                                                    double.parse(
+                                                        delivery.pickupLat!),
+                                                    double.parse(
+                                                        delivery.pickupLog!));
+                                            return Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                "${distance?.round()}KM Away"
+                                                    .commalise(),
+                                                style: TextStyle(
+                                                    color: AppColors.accent,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize:
+                                                        context.width(.04)),
+                                              ),
+                                            );
+                                          }
+                                          return const SizedBox.shrink();
+                                        }),
+                                      if (delivery.status
+                                              ?.toLowerCase()
+                                              .trim() !=
+                                          "scheduled")
+                                        Column(
+                                          children: [
+                                            SizedBox(
+                                                height: context.width(.03)),
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: WhitePill(
+                                                color: AppColors.accent,
+                                                margin: EdgeInsets.zero,
+                                                borderRadius: 10,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        context.width(.03),
+                                                    vertical:
+                                                        context.width(.015)),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Circle(
+                                                        color: delivery.status
+                                                                    ?.trim() ==
+                                                                "ENROUTE_PICKUP"
+                                                            ? AppColors.white
+                                                            : delivery.status ==
+                                                                    "DELIVERED"
+                                                                ? AppColors
+                                                                    .green
+                                                                : delivery.status ==
+                                                                        "IN_PROGRESS"
+                                                                    ? AppColors
+                                                                        .primary
+                                                                    : AppColors
+                                                                        .red,
+                                                        width:
+                                                            context.width(.015),
+                                                        child: const SizedBox
+                                                            .shrink()),
+                                                    Text(
+                                                      "  ${delivery.status?.replaceFirst("_", " ").toLowerCase().capitalizeAllWord()}",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color:
+                                                              AppColors.white,
+                                                          fontSize: context
+                                                              .width(.033)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                          );
-                                        }
-                                        return const SizedBox.shrink();
-                                      }),
+                                          ],
+                                        ),
                                     ],
                                   )),
                             );
