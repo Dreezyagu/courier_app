@@ -102,17 +102,17 @@ class _NavPageState extends State<NavPage> {
                                       : AppColors.default_icon,
                                   BlendMode.srcIn))),
                       label: "Payments"),
-                  BottomNavigationBarItem(
-                      icon: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: context.width(.02)),
-                          child: SvgPicture.asset(ImageUtil.deliveries,
-                              colorFilter: ColorFilter.mode(
-                                  selectedIndex == 2
-                                      ? AppColors.primary
-                                      : AppColors.default_icon,
-                                  BlendMode.srcIn))),
-                      label: "Deliveries"),
+                  // BottomNavigationBarItem(
+                  //     icon: Padding(
+                  //         padding: EdgeInsets.symmetric(
+                  //             vertical: context.width(.02)),
+                  //         child: SvgPicture.asset(ImageUtil.deliveries,
+                  //             colorFilter: ColorFilter.mode(
+                  //                 selectedIndex == 2
+                  //                     ? AppColors.primary
+                  //                     : AppColors.default_icon,
+                  //                 BlendMode.srcIn))),
+                  //     label: "Deliveries"),
                   BottomNavigationBarItem(
                       icon: Padding(
                           padding: EdgeInsets.symmetric(
@@ -136,8 +136,6 @@ class _NavPageState extends State<NavPage> {
     } else if (selectedIndex == 1) {
       return const PaymentsPage();
     } else if (selectedIndex == 2) {
-      return const Homepage();
-    } else if (selectedIndex == 3) {
       return const ProfilePage();
     } else {
       return const Homepage();

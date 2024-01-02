@@ -19,6 +19,7 @@ class ProfilePage extends ConsumerWidget {
       backgroundColor: AppColors.white,
       appBar: CustomAppBar(
         bgColor: AppColors.white,
+        leading: const SizedBox.shrink(),
         title: Text(
           "Profile",
           style: TextStyle(
@@ -42,10 +43,11 @@ class ProfilePage extends ConsumerWidget {
                       child: CachedNetworkImage(
                         imageUrl: data?.profilePhoto ?? "",
                         placeholder: (context, url) => Shimmer.fromColors(
-                          baseColor: AppColors.hintColor,
-                          highlightColor: AppColors.hintColor,
-                          child: const SizedBox.shrink(),
-                        ),
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: const ColoredBox(
+                              color: AppColors.white,
+                            )),
                         errorWidget: (context, url, error) => const SizedBox(
                           child: ColoredBox(color: AppColors.hintColor),
                         ),

@@ -44,10 +44,11 @@ class DeliverySummaryWidget extends StatelessWidget {
                         child: CachedNetworkImage(
                           imageUrl: delivery.package?.photoUrls?.first ?? "",
                           placeholder: (context, url) => Shimmer.fromColors(
-                            baseColor: AppColors.hintColor,
-                            highlightColor: AppColors.hintColor,
-                            child: const SizedBox.shrink(),
-                          ),
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: const ColoredBox(
+                                color: AppColors.white,
+                              )),
                           errorWidget: (context, url, error) => const SizedBox(
                             child: ColoredBox(color: AppColors.hintColor),
                           ),
