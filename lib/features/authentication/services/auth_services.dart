@@ -21,6 +21,8 @@ class AuthServices {
   static const addVehicleUrl = "couriers/delivery-tool";
   static const bankInfoUrl = "couriers/bank-info";
   static const guarantorUrl = "couriers/guarantor";
+  static const forgotPassUrl = "auth/reset-password";
+  static const updatePassUrl = "auth/update-password";
 
   static final HttpHelper dio = HttpHelper();
 
@@ -55,7 +57,7 @@ class AuthServices {
       }
       return (success: null, error: error?.message ?? "An error occured");
     } catch (e) {
-      return (success: null, error: "An error occured");  
+      return (success: null, error: "An error occured");
     }
   }
 
@@ -302,6 +304,51 @@ class AuthServices {
         error = ErrorModel.fromMap(e.response?.data);
       }
       return (success: null, error: error?.error_message ?? "An error occured");
+    } catch (e) {
+      return (success: null, error: "An error occured");
+    }
+  }
+
+  static Future<({String? success, String? error})> forgotPass(
+      String email) async {
+    try {
+      final response =
+          await dio.post("$baseUrl$forgotPassUrl", data: {"email": email});
+
+      if (response.data["status"] == "success") {
+        return (success: response.data["status"] as String, error: null);
+      } else {
+        final error = ErrorModel.fromMap(response.data);
+        return (success: null, error: error.message ?? "An error occured");
+      }
+    } on DioException catch (e) {
+      ErrorModel? error;
+      if (e.response != null) {
+        error = ErrorModel.fromMap(e.response?.data);
+      }
+      return (success: null, error: error?.message ?? "An error occured");
+    } catch (e) {
+      return (success: null, error: "An error occured");
+    }
+  }
+
+  static Future<({String? success, String? error})> resetPass(
+      Map<String, dynamic> payload) async {
+    try {
+      final response = await dio.post("$baseUrl$updatePassUrl", data: payload);
+
+      if (response.data["status"] == "success") {
+        return (success: response.data["status"] as String, error: null);
+      } else {
+        final error = ErrorModel.fromMap(response.data);
+        return (success: null, error: error.message ?? "An error occured");
+      }
+    } on DioException catch (e) {
+      ErrorModel? error;
+      if (e.response != null) {
+        error = ErrorModel.fromMap(e.response?.data);
+      }
+      return (success: null, error: error?.message ?? "An error occured");
     } catch (e) {
       return (success: null, error: "An error occured");
     }

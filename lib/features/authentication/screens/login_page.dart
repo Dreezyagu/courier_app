@@ -5,6 +5,7 @@ import 'package:ojembaa_courier/features/authentication/providers/get_banks_prov
 import 'package:ojembaa_courier/features/authentication/providers/signin_provider.dart';
 import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
 import 'package:ojembaa_courier/features/authentication/screens/enter_bank_details.dart';
+import 'package:ojembaa_courier/features/authentication/screens/forgot_password.dart';
 import 'package:ojembaa_courier/features/authentication/screens/guarantor_info.dart';
 import 'package:ojembaa_courier/features/authentication/screens/ownership_proof.dart';
 import 'package:ojembaa_courier/features/authentication/screens/signup_page.dart';
@@ -31,7 +32,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController emailController =
       TextEditingController(text: "ifeanyi@mailinator.com");
   final TextEditingController passwordController =
-      TextEditingController(text: "Password@123");
+      TextEditingController(text: "Password1@");
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool obscure = true;
 
@@ -107,14 +108,23 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     ),
                     SizedBox(height: context.height(.025)),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Forgot your password?",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: context.width(.04),
-                            fontWeight: FontWeight.w400),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ForgotPassword(),
+                            ));
+                      },
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Forgot your password?",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: context.width(.04),
+                              fontWeight: FontWeight.w400),
+                        ),
                       ),
                     ),
                     SizedBox(height: context.height(.01)),
