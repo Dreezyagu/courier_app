@@ -109,6 +109,7 @@ class _UploadIDState extends ConsumerState<UploadID> {
                           ))
                       .toList(),
                   value: idType,
+                  borderRadius: 12,
                   borderColor: const Color(0xff596B6F).withOpacity(.88),
                   onChanged: (String? val) {
                     idType = val;
@@ -350,6 +351,7 @@ class _UploadIDState extends ConsumerState<UploadID> {
                     },
                     isActive: !data.isLoading,
                     sidePadding: 0,
+                    disabledBgColor: AppColors.hintColor.withOpacity(.5),
                   );
                 })
               ],

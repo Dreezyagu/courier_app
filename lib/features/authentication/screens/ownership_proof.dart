@@ -98,6 +98,7 @@ class _OwnershipProofState extends ConsumerState<OwnershipProof> {
                   vehicleType = val;
                 },
                 hintText: "Select vehicle type",
+                borderRadius: 12,
               ),
               SizedBox(height: context.height(.025)),
               Text(

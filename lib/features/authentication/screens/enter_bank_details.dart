@@ -126,10 +126,9 @@ class _EnterBankDetailsState extends ConsumerState<EnterBankDetails> {
                             horizontal: context.width(.06),
                             vertical: context.width(.045),
                           ),
-                          label: const Text(
-                            "Select Bank",
-                            style: TextStyle(color: AppColors.hintColor),
-                          ),
+                          hintText: "Select Bank",
+                          hintStyle:
+                              const TextStyle(color: AppColors.hintColor),
                           labelStyle: const TextStyle(
                             color: AppColors.red,
                             fontFamilyFallback: ["Work Sans"],
