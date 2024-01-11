@@ -13,6 +13,7 @@ import 'package:ojembaa_courier/features/authentication/screens/upload_picture.d
 import 'package:ojembaa_courier/features/homepage/providers/get_location_provider.dart';
 import 'package:ojembaa_courier/features/homepage/providers/get_requests_provider.dart';
 import 'package:ojembaa_courier/features/homepage/screens/nav_page.dart';
+import 'package:ojembaa_courier/features/payments/providers/get_transactions_provider.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
@@ -30,9 +31,9 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController emailController =
-      TextEditingController(text: "ifeanyi@mailinator.com");
+      TextEditingController(text: "aaifeanyi17@gmail.com");
   final TextEditingController passwordController =
-      TextEditingController(text: "Password1@");
+      TextEditingController(text: "Password@1");
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool obscure = true;
 
@@ -197,6 +198,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                                 .read(getRequestsProvider
                                                     .notifier)
                                                 .getRequests();
+                                            ref
+                                                .read(getTransactionsProvider
+                                                    .notifier)
+                                                .getRequests(user.id!);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

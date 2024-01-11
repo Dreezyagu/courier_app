@@ -65,125 +65,130 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
                       color: AppColors.accent,
                       fontSize: context.width(.05)),
                 ),
-              WhitePill(
-                  width: double.infinity,
-                  borderRadius: 20,
-                  padding: EdgeInsets.all(context.width(.04)),
-                  margin: EdgeInsets.symmetric(vertical: context.width(.05)),
-                  color: const Color(0xffFEE4B1),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Delivery Status",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.accent,
-                            fontSize: context.width(.04)),
-                      ),
-                      SizedBox(
-                        width: context.width(.04),
-                      ),
-                      Consumer(builder: (context, ref, child) {
-                        final data = ref.watch(updateStatusProvider);
-                        final data2 = ref.watch(getSingleRequestProvider);
+              if (widget.distance != null &&
+                  widget.delivery.status?.toLowerCase().trim() != "scheduled")
+                WhitePill(
+                    width: double.infinity,
+                    borderRadius: 20,
+                    padding: EdgeInsets.all(context.width(.04)),
+                    margin: EdgeInsets.symmetric(vertical: context.width(.05)),
+                    color: const Color(0xffFEE4B1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Delivery Status",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.accent,
+                              fontSize: context.width(.04)),
+                        ),
+                        SizedBox(
+                          width: context.width(.04),
+                        ),
+                        Consumer(builder: (context, ref, child) {
+                          final data = ref.watch(updateStatusProvider);
+                          final data2 = ref.watch(getSingleRequestProvider);
 
-                        final reader = ref.watch(updateStatusProvider.notifier);
+                          final reader =
+                              ref.watch(updateStatusProvider.notifier);
 
-                        if (data.isLoading || data2.isLoading) {
-                          return SizedBox(
-                              height: context.width(.07),
-                              width: context.width(.07),
-                              child: const CircularProgressIndicator());
-                        }
-                        return Expanded(
-                          child: CustomDropDownFormField<String>(
-                              items: [
-                                "SCHEDULED",
-                                "ENROUTE_PICKUP",
-                                "IN_PROGRESS",
-                                "DELIVERED"
-                              ]
-                                  .map((e) => DropdownMenuItem<String>(
-                                        value: e,
-                                        child: Row(
-                                          children: [
-                                            Circle(
-                                                color: e == "ENROUTE_PICKUP"
-                                                    ? AppColors.white
-                                                    : e == "DELIVERED"
-                                                        ? AppColors.green
-                                                        : e == "IN_PROGRESS"
-                                                            ? AppColors.primary
-                                                            : AppColors.red,
-                                                width: context.width(.015),
-                                                child: const SizedBox.shrink()),
-                                            Text(
-                                              "  ${e.replaceFirst("_", " ").toLowerCase().capitalizeAllWord()}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors.white,
-                                                  fontSize:
-                                                      context.width(.037)),
-                                            ),
-                                          ],
-                                        ),
-                                      ))
-                                  .toList(),
-                              value: deliveryStatus,
-                              borderRadius: 10,
-                              textColor: AppColors.accent,
-                              borderColor: AppColors.accent,
-                              fillColor: AppColors.accent,
-                              dropdownColor: AppColors.accent,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: context.width(.03),
-                                vertical: context.width(.025),
-                              ),
-                              onChanged: (String? val) {
-                                if (deliveryStatus != val) {
-                                  reader.acceptDelivery(
-                                    id: widget.delivery.id!,
-                                    status: val!,
-                                    onSuccess: () {
-                                      ref
-                                          .read(getRequestsProvider.notifier)
-                                          .getRequests();
-                                      ref
-                                          .read(
-                                              getSingleRequestProvider.notifier)
-                                          .getSingleRequest(
-                                        widget.delivery.id!,
-                                        onSuccess: (delivery) {
-                                          Navigator.pop(context);
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DeliveryDetails(
-                                                        delivery: delivery,
-                                                        distance:
-                                                            widget.distance),
-                                              ));
-                                        },
-                                        onError: (p0) {
+                          if (data.isLoading || data2.isLoading) {
+                            return SizedBox(
+                                height: context.width(.07),
+                                width: context.width(.07),
+                                child: const CircularProgressIndicator());
+                          }
+                          return Expanded(
+                            child: CustomDropDownFormField<String>(
+                                items: [
+                                  "SCHEDULED",
+                                  "ENROUTE_PICKUP",
+                                  "IN_PROGRESS",
+                                  "DELIVERED"
+                                ]
+                                    .map((e) => DropdownMenuItem<String>(
+                                          value: e,
+                                          child: Row(
+                                            children: [
+                                              Circle(
+                                                  color: e == "ENROUTE_PICKUP"
+                                                      ? AppColors.white
+                                                      : e == "DELIVERED"
+                                                          ? AppColors.green
+                                                          : e == "IN_PROGRESS"
+                                                              ? AppColors
+                                                                  .primary
+                                                              : AppColors.red,
+                                                  width: context.width(.015),
+                                                  child:
+                                                      const SizedBox.shrink()),
+                                              Text(
+                                                "  ${e.replaceFirst("_", " ").toLowerCase().capitalizeAllWord()}",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors.white,
+                                                    fontSize:
+                                                        context.width(.037)),
+                                              ),
+                                            ],
+                                          ),
+                                        ))
+                                    .toList(),
+                                value: deliveryStatus,
+                                borderRadius: 10,
+                                textColor: AppColors.accent,
+                                borderColor: AppColors.accent,
+                                fillColor: AppColors.accent,
+                                dropdownColor: AppColors.accent,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: context.width(.03),
+                                  vertical: context.width(.025),
+                                ),
+                                onChanged: (String? val) {
+                                  if (deliveryStatus != val) {
+                                    reader.acceptDelivery(
+                                      id: widget.delivery.id!,
+                                      status: val!,
+                                      onSuccess: () {
+                                        ref
+                                            .read(getRequestsProvider.notifier)
+                                            .getRequests();
+                                        ref
+                                            .read(getSingleRequestProvider
+                                                .notifier)
+                                            .getSingleRequest(
+                                          widget.delivery.id!,
+                                          onSuccess: (delivery) {
+                                            Navigator.pop(context);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DeliveryDetails(
+                                                          delivery: delivery,
+                                                          distance:
+                                                              widget.distance),
+                                                ));
+                                          },
+                                          onError: (p0) {
+                                            CustomSnackbar.showErrorSnackBar(
+                                                context,
+                                                message: p0);
+                                          },
+                                        );
+                                      },
+                                      onError: (p0) =>
                                           CustomSnackbar.showErrorSnackBar(
                                               context,
-                                              message: p0);
-                                        },
-                                      );
-                                    },
-                                    onError: (p0) =>
-                                        CustomSnackbar.showErrorSnackBar(
-                                            context,
-                                            message: p0),
-                                  );
-                                }
-                              }),
-                        );
-                      })
-                    ],
-                  )),
+                                              message: p0),
+                                    );
+                                  }
+                                }),
+                          );
+                        })
+                      ],
+                    )),
               SizedBox(height: context.width(.04)),
               DeliverySummaryWidget(delivery: widget.delivery),
               if (widget.delivery.status?.toLowerCase().trim() == "scheduled")

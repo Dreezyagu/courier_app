@@ -23,61 +23,63 @@ class _ReconcilePageState extends ConsumerState<ReconcilePage> {
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: context.width(.06), vertical: context.width(.02)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Pay into this account to reconcile this order.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: context.width(.04),
-                color: AppColors.accent,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Pay into this account to reconcile this order.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: context.width(.04),
+                  color: AppColors.accent,
+                ),
               ),
-            ),
-            SizedBox(height: context.width(.04)),
-            WhitePill(
-                width: double.infinity,
-                color: const Color(0xffD9D9D9).withOpacity(.51),
-                padding: EdgeInsets.symmetric(
-                    horizontal: context.width(.06),
-                    vertical: context.width(.04)),
-                borderRadius: 10,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const TextColumn(
-                      title: "Bank",
-                      subtitle: "Wema bank",
-                    ),
-                    SizedBox(height: context.width(.04)),
-                    const TextColumn(
-                      title: "Account name",
-                      subtitle: "Ojembaa Logistic company",
-                    ),
-                    SizedBox(height: context.width(.04)),
-                    const TextColumn(
-                      title: "Account name",
-                      subtitle: "826293200",
-                    ),
-                  ],
-                )),
-            SizedBox(height: context.width(.06)),
-            Text(
-              "Pay into this account to reconcile this order.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: context.width(.04),
-                color: AppColors.accent,
+              SizedBox(height: context.width(.04)),
+              WhitePill(
+                  width: double.infinity,
+                  color: const Color(0xffD9D9D9).withOpacity(.51),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: context.width(.06),
+                      vertical: context.width(.04)),
+                  borderRadius: 10,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const TextColumn(
+                        title: "Bank",
+                        subtitle: "Wema bank",
+                      ),
+                      SizedBox(height: context.width(.04)),
+                      const TextColumn(
+                        title: "Account name",
+                        subtitle: "Ojembaa Logistic company",
+                      ),
+                      SizedBox(height: context.width(.04)),
+                      const TextColumn(
+                        title: "Account name",
+                        subtitle: "826293200",
+                      ),
+                    ],
+                  )),
+              SizedBox(height: context.width(.06)),
+              Text(
+                "Pay into this account to reconcile this order.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: context.width(.04),
+                  color: AppColors.accent,
+                ),
               ),
-            ),
-            SizedBox(height: context.width(.02)),
-            const AddPictureWidget(isLoading: false),
-            SizedBox(height: context.width(.06)),
-            CustomContinueButton(
-              onPressed: () {},
-              sidePadding: 0,
-            )
-          ],
+              SizedBox(height: context.width(.02)),
+              const AddPictureWidget(isLoading: false),
+              SizedBox(height: context.width(.06)),
+              CustomContinueButton(
+                onPressed: () {},
+                sidePadding: 0,
+              )
+            ],
+          ),
         ),
       ),
     );
