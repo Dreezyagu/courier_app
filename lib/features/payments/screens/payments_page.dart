@@ -39,7 +39,10 @@ class PaymentsPage extends ConsumerWidget {
                       ),
                       SizedBox(height: context.width(.04)),
                       Text(
-                        "-${Utility.currencyConverter(double.parse(data?.first.currBalance ?? "0"))}",
+                        Utility.currencyConverter(double.parse(
+                            data == null || data.isEmpty
+                                ? "0"
+                                : data.first.currBalance ?? "0")),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: context.width(.13),
@@ -73,72 +76,77 @@ class PaymentsPage extends ConsumerWidget {
                             ),
                           ),
                           SizedBox(height: context.width(.04)),
-                          Expanded(
-                            child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: data?.length,
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  final mainData = data![index];
-                                  return WhitePill(
-                                      borderRadius: 10,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: context.width(.03),
-                                          horizontal: context.width(.04)),
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: context.width(.02)),
-                                      color: AppColors.white,
-                                      boxBorder:
-                                          Border.all(color: const Color(0xffE5E7EB)),
-                                      child: Row(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                mainData.type
-                                                        ?.toLowerCase()
-                                                        .capitalize() ??
-                                                    "",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: context.width(.04),
-                                                  color: AppColors.accent,
+                          if (data != null)
+                            Expanded(
+                              child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: data.length,
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    final mainData = data[index];
+                                    return WhitePill(
+                                        borderRadius: 10,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: context.width(.03),
+                                            horizontal: context.width(.04)),
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: context.width(.02)),
+                                        color: AppColors.white,
+                                        boxBorder: Border.all(
+                                            color: const Color(0xffE5E7EB)),
+                                        child: Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  mainData.type
+                                                          ?.toLowerCase()
+                                                          .capitalize() ??
+                                                      "",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        context.width(.04),
+                                                    color: AppColors.accent,
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                Utility.dateConvertedNoDay(
-                                                    Utility.convertStringToDate(
-                                                        mainData.createdAt ??
-                                                            "")),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: context.width(.033),
-                                                  color: const Color(0xff9CA3AF),
+                                                Text(
+                                                  Utility.dateConvertedNoDay(
+                                                      Utility.convertStringToDate(
+                                                          mainData.createdAt ??
+                                                              "")),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        context.width(.033),
+                                                    color:
+                                                        const Color(0xff9CA3AF),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          Text(
-                                            "${mainData.type == "DELIVERY" ? "-" : "+"}${Utility.currencyConverter(double.parse(mainData.amount ?? "0"))}",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: context.width(.045),
-                                              fontFamilyFallback: const [
-                                                "Work Sans"
                                               ],
-                                              color: mainData.type == "DELIVERY"
-                                                  ? const Color(0xFFDC2626)
-                                                  : const Color(0xFF00B35C),
                                             ),
-                                          ),
-                                        ],
-                                      ));
-                                }),
-                          )
+                                            const Spacer(),
+                                            Text(
+                                              "${mainData.type == "DELIVERY" ? "+" : ""}${Utility.currencyConverter(double.parse(mainData.amount ?? "0"))}",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: context.width(.045),
+                                                fontFamilyFallback: const [
+                                                  "Work Sans"
+                                                ],
+                                                color: mainData.type !=
+                                                        "DELIVERY"
+                                                    ? const Color(0xFFDC2626)
+                                                    : const Color(0xFF00B35C),
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+                                  }),
+                            )
                         ],
                       ),
                     ),

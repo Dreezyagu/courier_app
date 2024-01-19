@@ -18,6 +18,8 @@ import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
 import 'package:ojembaa_courier/utils/components/validators.dart';
+import 'package:ojembaa_courier/utils/helpers/storage/storage_helper.dart';
+import 'package:ojembaa_courier/utils/helpers/storage/storage_keys.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_button.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_textfield.dart';
 import 'package:ojembaa_courier/utils/widgets/snackbar.dart';
@@ -141,6 +143,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       CustomSnackbar.showErrorSnackBar(context,
                                           message: p0),
                                   onSuccess: (user) {
+                                    StorageHelper.setString(
+                                        StorageKeys.userId, user.id);
                                     ref.read(userProvider.notifier).getDetails(
                                           onError: (p0) =>
                                               CustomSnackbar.showErrorSnackBar(
@@ -201,7 +205,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                             ref
                                                 .read(getTransactionsProvider
                                                     .notifier)
-                                                .getRequests(user.id!);
+                                                .getTransactions(user.id!);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(

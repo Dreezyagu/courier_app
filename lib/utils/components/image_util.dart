@@ -18,6 +18,8 @@ class ImageUtil {
   static const guarantor = "assets/icons/guarantor.svg";
   static const wallet = "assets/icons/wallet.svg";
   static const deliveries = "assets/icons/deliveries.svg";
+  static const delivery_confirmed = "assets/icons/delivery_confirmed.svg";
+
 
   static const icon_title = "assets/images/icon_title.svg";
   static const icon_title_accent = "assets/images/icon_title_accent.svg";

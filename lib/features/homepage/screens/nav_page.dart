@@ -29,8 +29,7 @@ class _NavPageState extends State<NavPage> {
             child: Stack(
               children: [
                 getBody(),
-                //TODO
-                if (watcher.data?.isActivated == true)
+                if (watcher.data?.isActivated == false)
                   Container(
                     height: double.infinity,
                     width: double.infinity,
@@ -63,9 +62,7 @@ class _NavPageState extends State<NavPage> {
                   )
               ],
             )),
-
-        // TODO
-        bottomNavigationBar: watcher.data?.isActivated == true
+        bottomNavigationBar: watcher.data?.isActivated == false
             ? null
             : BottomNavigationBar(
                 currentIndex: selectedIndex,

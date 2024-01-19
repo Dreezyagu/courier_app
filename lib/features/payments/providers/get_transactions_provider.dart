@@ -8,7 +8,7 @@ class GetTransactionsProvider
     extends StateNotifier<BaseNotifier<List<TransactionsModel>>> {
   GetTransactionsProvider() : super(BaseNotifier());
 
-  void getRequests(String id,
+  void getTransactions(String id,
       {VoidCallback? onSuccess, Function(String)? onError}) async {
     state = BaseNotifier.setLoading();
     final data = await PaymentServices.getTransactions(id);
