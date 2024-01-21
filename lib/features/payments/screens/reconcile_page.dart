@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ojembaa_courier/features/authentication/providers/upload_asset_provider.dart';
 import 'package:ojembaa_courier/features/authentication/widgets/create_account_widgets.dart';
 import 'package:ojembaa_courier/features/authentication/widgets/image_picker_widget.dart';
+import 'package:ojembaa_courier/features/payments/providers/get_balance_provider.dart';
 import 'package:ojembaa_courier/features/payments/providers/get_transactions_provider.dart';
 import 'package:ojembaa_courier/features/payments/providers/reconciliation_provider.dart';
 import 'package:ojembaa_courier/features/payments/screens/reconciliation_success.dart';
@@ -212,18 +213,14 @@ class _ReconcilePageState extends ConsumerState<ReconcilePage> {
                             .read(getTransactionsProvider.notifier)
                             .getTransactions(
                               userId,
-                              onSuccess: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ReconciliationSuccess(),
-                                    ));
-                              },
-                              onError: (p0) => CustomSnackbar.showErrorSnackBar(
-                                  context,
-                                  message: p0),
                             );
+                        ref.read(getBalanceProvider.notifier).getBalance();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ReconciliationSuccess(),
+                            ));
                       },
                     );
                   },

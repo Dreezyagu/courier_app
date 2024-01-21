@@ -9,19 +9,27 @@ class TransactionsModel {
   final String? prevBalance;
   final String? currBalance;
   final String? recordId;
+  final String? proof;
+  final String? status;
+  final String? approvalDate;
+  final String? approvedById;
   final String? createdAt;
   final String? updatedAt;
 
   TransactionsModel(
-      {required this.id,
-      required this.courierId,
-      required this.type,
-      required this.amount,
-      required this.prevBalance,
-      required this.currBalance,
-      required this.recordId,
-      required this.createdAt,
-      required this.updatedAt});
+      this.id,
+      this.courierId,
+      this.type,
+      this.amount,
+      this.prevBalance,
+      this.currBalance,
+      this.recordId,
+      this.proof,
+      this.status,
+      this.approvalDate,
+      this.approvedById,
+      this.createdAt,
+      this.updatedAt);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -32,6 +40,10 @@ class TransactionsModel {
       'prevBalance': prevBalance,
       'currBalance': currBalance,
       'recordId': recordId,
+      'proof': proof,
+      'status': status,
+      'approvalDate': approvalDate,
+      'approvedById': approvedById,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
@@ -39,17 +51,19 @@ class TransactionsModel {
 
   factory TransactionsModel.fromMap(Map<String, dynamic> map) {
     return TransactionsModel(
-      id: map['id'] != null ? map['id'] as String : null,
-      courierId: map['courierId'] != null ? map['courierId'] as String : null,
-      type: map['type'] != null ? map['type'] as String : null,
-      amount: map['amount'] != null ? map['amount'] as String : null,
-      prevBalance:
-          map['prevBalance'] != null ? map['prevBalance'] as String : null,
-      currBalance:
-          map['currBalance'] != null ? map['currBalance'] as String : null,
-      recordId: map['recordId'] != null ? map['recordId'] as String : null,
-      createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
-      updatedAt: map['updatedAt'] != null ? map['updatedAt'] as String : null,
+      map['id'] != null ? map['id'] as String : null,
+      map['courierId'] != null ? map['courierId'] as String : null,
+      map['type'] != null ? map['type'] as String : null,
+      map['amount'] != null ? map['amount'] as String : null,
+      map['prevBalance'] != null ? map['prevBalance'] as String : null,
+      map['currBalance'] != null ? map['currBalance'] as String : null,
+      map['recordId'] != null ? map['recordId'] as String : null,
+      map['proof'] != null ? map['proof'] as String : null,
+      map['status'] != null ? map['status'] as String : null,
+      map['approvalDate'] != null ? map['approvalDate'] as String : null,
+      map['approvedById'] != null ? map['approvedById'] as String : null,
+      map['createdAt'] != null ? map['createdAt'] as String : null,
+      map['updatedAt'] != null ? map['updatedAt'] as String : null,
     );
   }
 

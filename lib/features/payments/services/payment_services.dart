@@ -34,6 +34,27 @@ class PaymentServices {
     }
   }
 
+  static Future<({String? success, String? error})> getBalance() async {
+    try {
+      final response = await dio.get("${baseUrl}balance");
+
+      if (response.data["status"] == "success") {
+        return (success: response.data["data"].toString(), error: null);
+      } else {
+        final error = ErrorModel.fromMap(response.data);
+        return (success: null, error: error.message ?? "An error occured");
+      }
+    } on DioException catch (e) {
+      ErrorModel? error;
+      if (e.response != null) {
+        error = ErrorModel.fromMap(e.response?.data);
+      }
+      return (success: null, error: error?.message ?? "An error occured");
+    } catch (e) {
+      return (success: null, error: "An error occured");
+    }
+  }
+
   static Future<({String? success, String? error})> reconciliation(
       String id, Map<String, dynamic> payload) async {
     try {

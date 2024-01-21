@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ojembaa_courier/features/payments/providers/get_balance_provider.dart';
 import 'package:ojembaa_courier/features/payments/providers/get_transactions_provider.dart';
 import 'package:ojembaa_courier/features/payments/screens/reconcile_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
@@ -38,19 +39,20 @@ class PaymentsPage extends ConsumerWidget {
                         ),
                       ),
                       SizedBox(height: context.width(.04)),
-                      Text(
-                        Utility.currencyConverter(double.parse(
-                            data == null || data.isEmpty
-                                ? "0"
-                                : data.first.currBalance ?? "0")),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: context.width(.13),
-                          fontWeight: FontWeight.w700,
-                          fontFamilyFallback: const ["Work Sans"],
-                          color: AppColors.white,
-                        ),
-                      ),
+                      Consumer(builder: (context, ref, child) {
+                        final data = ref.watch(getBalanceProvider).data;
+                        return Text(
+                          Utility.currencyConverter(
+                              Utility.convertToRealNumber(data ?? "0")),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: context.width(.13),
+                            fontWeight: FontWeight.w700,
+                            fontFamilyFallback: const ["Work Sans"],
+                            color: AppColors.white,
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -130,17 +132,23 @@ class PaymentsPage extends ConsumerWidget {
                                             ),
                                             const Spacer(),
                                             Text(
-                                              "${mainData.type == "DELIVERY" ? "+" : ""}${Utility.currencyConverter(double.parse(mainData.amount ?? "0"))}",
+                                              "${mainData.type == "DELIVERY" ? "-" : "+"}${Utility.currencyConverter(double.parse(mainData.amount ?? "0"))}",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: context.width(.045),
+                                                fontWeight: FontWeight.w500,
                                                 fontFamilyFallback: const [
                                                   "Work Sans"
                                                 ],
-                                                color: mainData.type !=
-                                                        "DELIVERY"
-                                                    ? const Color(0xFFDC2626)
-                                                    : const Color(0xFF00B35C),
+                                                color: mainData.status ==
+                                                        "pending"
+                                                    ? const Color(0xffF7CB73)
+                                                    : mainData.type ==
+                                                            "DELIVERY"
+                                                        ? const Color(
+                                                            0xFFDC2626)
+                                                        : const Color(
+                                                            0xFF00B35C),
                                               ),
                                             ),
                                           ],

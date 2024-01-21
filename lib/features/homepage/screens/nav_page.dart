@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
+import 'package:ojembaa_courier/features/deliveries/screens/deliveries_page.dart';
 import 'package:ojembaa_courier/features/homepage/screens/homepage.dart';
+import 'package:ojembaa_courier/features/payments/providers/get_balance_provider.dart';
+import 'package:ojembaa_courier/features/payments/providers/get_transactions_provider.dart';
 import 'package:ojembaa_courier/features/payments/screens/payments_page.dart';
 import 'package:ojembaa_courier/features/profile/screens/profile_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
+import 'package:ojembaa_courier/utils/helpers/storage/storage_helper.dart';
+import 'package:ojembaa_courier/utils/helpers/storage/storage_keys.dart';
 import 'package:ojembaa_courier/utils/widgets/asset_icon.dart';
 
 class NavPage extends StatefulWidget {
@@ -28,7 +33,16 @@ class _NavPageState extends State<NavPage> {
             canPop: false,
             child: Stack(
               children: [
-                getBody(),
+                // getBody(),
+                IndexedStack(
+                  index: selectedIndex,
+                  children: const [
+                    Homepage(),
+                    PaymentsPage(),
+                    DeliveriesPage(),
+                    ProfilePage(),
+                  ],
+                ),
                 if (watcher.data?.isActivated == false)
                   Container(
                     height: double.infinity,
@@ -99,17 +113,17 @@ class _NavPageState extends State<NavPage> {
                                       : AppColors.default_icon,
                                   BlendMode.srcIn))),
                       label: "Payments"),
-                  // BottomNavigationBarItem(
-                  //     icon: Padding(
-                  //         padding: EdgeInsets.symmetric(
-                  //             vertical: context.width(.02)),
-                  //         child: SvgPicture.asset(ImageUtil.deliveries,
-                  //             colorFilter: ColorFilter.mode(
-                  //                 selectedIndex == 2
-                  //                     ? AppColors.primary
-                  //                     : AppColors.default_icon,
-                  //                 BlendMode.srcIn))),
-                  //     label: "Deliveries"),
+                  BottomNavigationBarItem(
+                      icon: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: context.width(.02)),
+                          child: SvgPicture.asset(ImageUtil.deliveries,
+                              colorFilter: ColorFilter.mode(
+                                  selectedIndex == 2
+                                      ? AppColors.primary
+                                      : AppColors.default_icon,
+                                  BlendMode.srcIn))),
+                      label: "Deliveries"),
                   BottomNavigationBarItem(
                       icon: Padding(
                           padding: EdgeInsets.symmetric(
@@ -117,7 +131,15 @@ class _NavPageState extends State<NavPage> {
                           child: SvgPicture.asset(ImageUtil.profile)),
                       label: "Profile"),
                 ],
-                onTap: (value) {
+                onTap: (value) async {
+                  if (value == 1) {
+                    final userId =
+                        await StorageHelper.getString(StorageKeys.userId);
+                    ref
+                        .read(getTransactionsProvider.notifier)
+                        .getTransactions(userId ?? "");
+                    ref.read(getBalanceProvider.notifier).getBalance();
+                  }
                   setState(() {
                     selectedIndex = value;
                   });

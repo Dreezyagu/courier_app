@@ -59,7 +59,7 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
               if (widget.distance != null &&
                   widget.delivery.status?.toLowerCase().trim() == "scheduled")
                 Text(
-                  "${widget.distance?.round()} km Away".commalise(),
+                  "${widget.distance?.toStringAsFixed(2)} km Away".commalise(),
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: AppColors.accent,
@@ -105,7 +105,8 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
                                   "SCHEDULED",
                                   "ENROUTE_PICKUP",
                                   "IN_PROGRESS",
-                                  "DELIVERED"
+                                  "DELIVERED",
+                                  "COMPLETED"
                                 ]
                                     .map((e) => DropdownMenuItem<String>(
                                           value: e,
@@ -114,7 +115,8 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
                                               Circle(
                                                   color: e == "ENROUTE_PICKUP"
                                                       ? AppColors.white
-                                                      : e == "DELIVERED"
+                                                      : e == "DELIVERED" ||
+                                                              e == "COMPLETED"
                                                           ? AppColors.green
                                                           : e == "IN_PROGRESS"
                                                               ? AppColors
@@ -263,36 +265,37 @@ class _DeliveryDetailsState extends ConsumerState<DeliveryDetails> {
                     }))
                   ],
                 ),
-              WhitePill(
-                padding: EdgeInsets.symmetric(vertical: context.width(.025)),
-                margin: EdgeInsets.symmetric(vertical: context.width(.017)),
-                color: AppColors.accent,
-                child: ListTile(
-                  onTap: () {
-                    Utility.launchURL(
-                        "tel:${widget.delivery.receiverPhone ?? ""}");
-                  },
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(ImageUtil.test_image),
+              if (widget.delivery.status?.toLowerCase().trim() != "completed")
+                WhitePill(
+                  padding: EdgeInsets.symmetric(vertical: context.width(.025)),
+                  margin: EdgeInsets.symmetric(vertical: context.width(.017)),
+                  color: AppColors.accent,
+                  child: ListTile(
+                    onTap: () {
+                      Utility.launchURL(
+                          "tel:${widget.delivery.receiverPhone ?? ""}");
+                    },
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.asset(ImageUtil.test_image),
+                    ),
+                    title: Text(
+                      widget.delivery.receiverName ?? "",
+                      style: TextStyle(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: context.width(.04)),
+                    ),
+                    trailing: Circle(
+                        color: Colors.transparent,
+                        borderColor: AppColors.primary,
+                        width: context.width(.12),
+                        child: const Icon(
+                          Icons.phone,
+                          color: AppColors.white,
+                        )),
                   ),
-                  title: Text(
-                    widget.delivery.receiverName ?? "",
-                    style: TextStyle(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: context.width(.04)),
-                  ),
-                  trailing: Circle(
-                      color: Colors.transparent,
-                      borderColor: AppColors.primary,
-                      width: context.width(.12),
-                      child: const Icon(
-                        Icons.phone,
-                        color: AppColors.white,
-                      )),
                 ),
-              ),
             ],
           ),
         ),

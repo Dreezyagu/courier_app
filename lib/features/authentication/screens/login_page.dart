@@ -13,6 +13,7 @@ import 'package:ojembaa_courier/features/authentication/screens/upload_picture.d
 import 'package:ojembaa_courier/features/homepage/providers/get_location_provider.dart';
 import 'package:ojembaa_courier/features/homepage/providers/get_requests_provider.dart';
 import 'package:ojembaa_courier/features/homepage/screens/nav_page.dart';
+import 'package:ojembaa_courier/features/payments/providers/get_balance_provider.dart';
 import 'package:ojembaa_courier/features/payments/providers/get_transactions_provider.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
@@ -43,214 +44,227 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: context.width(.06)),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: context.height(.03)),
-                    SvgPicture.asset(
-                      ImageUtil.icon_title_accent,
-                    ),
-                    SizedBox(height: context.height(.048)),
-                    Text(
-                      "Sign In",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: context.width(.045),
-                          fontWeight: FontWeight.w700),
-                    ),
-                    SizedBox(height: context.height(.02)),
-                    CustomTextFormField(
-                      controller: emailController,
-                      validator: Validators.multipleAnd(
-                          [Validators.email(), Validators.notEmpty()]),
-                      hintText: "Email",
-                      prefix: Container(
-                        margin: EdgeInsets.only(
-                            left: context.width(.06),
-                            right: context.width(.03)),
-                        child: SvgPicture.asset(
-                          ImageUtil.email,
+      body: PopScope(
+        canPop: false,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: context.width(.06)),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: context.height(.03)),
+                      SvgPicture.asset(
+                        ImageUtil.icon_title_accent,
+                      ),
+                      SizedBox(height: context.height(.048)),
+                      Text(
+                        "Sign In",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: context.width(.045),
+                            fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(height: context.height(.02)),
+                      CustomTextFormField(
+                        controller: emailController,
+                        validator: Validators.multipleAnd(
+                            [Validators.email(), Validators.notEmpty()]),
+                        hintText: "Email",
+                        prefix: Container(
+                          margin: EdgeInsets.only(
+                              left: context.width(.06),
+                              right: context.width(.03)),
+                          child: SvgPicture.asset(
+                            ImageUtil.email,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: context.height(.03)),
-                    CustomTextFormField(
-                      controller: passwordController,
-                      hintText: "Password",
-                      obscureText: obscure,
-                      validator: Validators.notEmpty(),
-                      prefix: Container(
-                        margin: EdgeInsets.only(
-                            left: context.width(.06),
-                            right: context.width(.03)),
-                        child: SvgPicture.asset(
-                          ImageUtil.password,
+                      SizedBox(height: context.height(.03)),
+                      CustomTextFormField(
+                        controller: passwordController,
+                        hintText: "Password",
+                        obscureText: obscure,
+                        validator: Validators.notEmpty(),
+                        prefix: Container(
+                          margin: EdgeInsets.only(
+                              left: context.width(.06),
+                              right: context.width(.03)),
+                          child: SvgPicture.asset(
+                            ImageUtil.password,
+                          ),
+                        ),
+                        suffix: Padding(
+                          padding: EdgeInsets.only(right: context.width(.02)),
+                          child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  obscure = !obscure;
+                                });
+                              },
+                              icon: Icon(
+                                !obscure
+                                    ? Icons.visibility_outlined
+                                    : Icons.visibility_off_outlined,
+                                color: AppColors.hintColor,
+                                size: context.width(.05),
+                              )),
                         ),
                       ),
-                      suffix: Padding(
-                        padding: EdgeInsets.only(right: context.width(.02)),
-                        child: IconButton(
+                      SizedBox(height: context.height(.025)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ForgotPassword(),
+                              ));
+                        },
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Forgot your password?",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: context.width(.04),
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: context.height(.01)),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final watcher = ref.watch(signInProvider);
+                          final reader = ref.read(signInProvider.notifier);
+                          return CustomContinueButton(
                             onPressed: () {
-                              setState(() {
-                                obscure = !obscure;
-                              });
-                            },
-                            icon: Icon(
-                              !obscure
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: AppColors.hintColor,
-                              size: context.width(.05),
-                            )),
-                      ),
-                    ),
-                    SizedBox(height: context.height(.025)),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ForgotPassword(),
-                            ));
-                      },
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Forgot your password?",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: context.width(.04),
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: context.height(.01)),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        final watcher = ref.watch(signInProvider);
-                        final reader = ref.read(signInProvider.notifier);
-                        return CustomContinueButton(
-                          onPressed: () {
-                            if (_formKey.currentState?.validate() == true) {
-                              reader.signIn(
-                                  onError: (p0) =>
-                                      CustomSnackbar.showErrorSnackBar(context,
-                                          message: p0),
-                                  onSuccess: (user) {
-                                    StorageHelper.setString(
-                                        StorageKeys.userId, user.id);
-                                    ref.read(userProvider.notifier).getDetails(
-                                          onError: (p0) =>
-                                              CustomSnackbar.showErrorSnackBar(
-                                                  context,
-                                                  message: p0),
-                                          onSuccess: (p0) {
-                                            if (user.profilePhoto == null) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const UploadPicture(),
-                                                  ));
-                                              return;
-                                            }
+                              if (_formKey.currentState?.validate() == true) {
+                                reader.signIn(
+                                    onError: (p0) =>
+                                        CustomSnackbar.showErrorSnackBar(
+                                            context,
+                                            message: p0),
+                                    onSuccess: (user) {
+                                      StorageHelper.setString(
+                                          StorageKeys.userId, user.id);
+                                      ref
+                                          .read(userProvider.notifier)
+                                          .getDetails(
+                                            onError: (p0) => CustomSnackbar
+                                                .showErrorSnackBar(context,
+                                                    message: p0),
+                                            onSuccess: (p0) {
+                                              if (user.profilePhoto == null) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const UploadPicture(),
+                                                    ));
+                                                return;
+                                              }
 
-                                            if (user.tools == null) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const OwnershipProof(),
-                                                  ));
-                                              return;
-                                            }
-                                            if (user.bankInformation == null ||
-                                                user.bankInformation!.isEmpty) {
+                                              if (user.tools == null) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const OwnershipProof(),
+                                                    ));
+                                                return;
+                                              }
+                                              if (user.bankInformation ==
+                                                      null ||
+                                                  user.bankInformation!
+                                                      .isEmpty) {
+                                                ref
+                                                    .read(getBanksProvider
+                                                        .notifier)
+                                                    .getBanks();
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const EnterBankDetails(),
+                                                    ));
+                                                return;
+                                              }
+                                              if (user.guarantor == null ||
+                                                  user.bankInformation!
+                                                      .isEmpty) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const GuarantorInfo(),
+                                                    ));
+                                                return;
+                                              }
                                               ref
-                                                  .read(
-                                                      getBanksProvider.notifier)
-                                                  .getBanks();
+                                                  .read(getLocationProvider
+                                                      .notifier)
+                                                  .getCurrentLocation();
+                                              ref
+                                                  .read(getRequestsProvider
+                                                      .notifier)
+                                                  .getRequests();
+                                              ref
+                                                  .read(getTransactionsProvider
+                                                      .notifier)
+                                                  .getTransactions(user.id!);
+                                              ref
+                                                  .read(getBalanceProvider
+                                                      .notifier)
+                                                  .getBalance();
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
+                                                    settings:
+                                                        const RouteSettings(
+                                                            name: "/mainPage"),
                                                     builder: (context) =>
-                                                        const EnterBankDetails(),
+                                                        const NavPage(),
                                                   ));
-                                              return;
-                                            }
-                                            if (user.guarantor == null ||
-                                                user.bankInformation!.isEmpty) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const GuarantorInfo(),
-                                                  ));
-                                              return;
-                                            }
-                                            ref
-                                                .read(getLocationProvider
-                                                    .notifier)
-                                                .getCurrentLocation();
-                                            ref
-                                                .read(getRequestsProvider
-                                                    .notifier)
-                                                .getRequests();
-                                            ref
-                                                .read(getTransactionsProvider
-                                                    .notifier)
-                                                .getTransactions(user.id!);
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  settings: const RouteSettings(
-                                                      name: "/mainPage"),
-                                                  builder: (context) =>
-                                                      const NavPage(),
-                                                ));
-                                          },
-                                        );
-                                  },
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim());
-                            }
-                          },
-                          isActive: !watcher.isLoading,
-                          sidePadding: 0,
-                          elevation: 0,
-                          bgColor: AppColors.accent,
-                          title: "Sign In",
-                        );
-                      },
-                    ),
-                    SizedBox(height: context.height(.02)),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignupPage(),
-                            ));
-                      },
-                      child: RichText(
-                          text: TextSpan(
-                              style: TextStyle(
-                                  fontSize: context.width(.037),
-                                  color: AppColors.black),
-                              children: const [
-                            TextSpan(text: "Don't have an account?"),
-                            TextSpan(
-                                text: " Sign up",
-                                style: TextStyle(color: AppColors.red)),
-                          ])),
-                    ),
-                  ],
+                                            },
+                                          );
+                                    },
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim());
+                              }
+                            },
+                            isActive: !watcher.isLoading,
+                            sidePadding: 0,
+                            elevation: 0,
+                            bgColor: AppColors.accent,
+                            title: "Sign In",
+                          );
+                        },
+                      ),
+                      SizedBox(height: context.height(.02)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignupPage(),
+                              ));
+                        },
+                        child: RichText(
+                            text: TextSpan(
+                                style: TextStyle(
+                                    fontSize: context.width(.037),
+                                    color: AppColors.black),
+                                children: const [
+                              TextSpan(text: "Don't have an account?"),
+                              TextSpan(
+                                  text: " Sign up",
+                                  style: TextStyle(color: AppColors.red)),
+                            ])),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
