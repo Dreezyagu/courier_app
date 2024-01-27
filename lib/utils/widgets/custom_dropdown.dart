@@ -19,13 +19,16 @@ class CustomDropDownFormField<T> extends StatefulWidget {
       this.fontSize,
       this.fillColor,
       this.height,
-      this.isExpanded = false})
+      this.isExpanded = false,
+      this.borderRadius,
+      this.textColor,
+      this.dropdownColor})
       : super(key: key);
 
   final String? hintText;
   final EdgeInsetsGeometry? padding;
   final Color? labelColor;
-  final Color? fillColor;
+  final Color? fillColor, textColor, dropdownColor;
   final bool isExpanded;
   final Color? borderColor;
 
@@ -34,7 +37,7 @@ class CustomDropDownFormField<T> extends StatefulWidget {
   final List<DropdownMenuItem<T>>? items;
   final T? value;
   final ValueChanged<T>? onChanged;
-  final double? height;
+  final double? height, borderRadius;
   final double? hintFontSize;
   final double? fontSize;
 
@@ -55,13 +58,13 @@ class _CustomDropDownFormFieldState<T>
           height: widget.height,
           child: DropdownButtonFormField<T?>(
             style: TextStyle(
-              color: AppColors.black,
+              color: widget.textColor ?? AppColors.black,
               fontSize: widget.fontSize ?? context.width(.037),
             ),
             value: widget.value,
             icon: const Icon(Icons.keyboard_arrow_down),
             isExpanded: widget.isExpanded,
-            dropdownColor: AppColors.white,
+            dropdownColor: widget.dropdownColor ??  AppColors.white,
             hint: Text(widget.hintText ?? '',
                 style: TextStyle(
                     fontFamily: "QanelasSoft",
@@ -70,23 +73,28 @@ class _CustomDropDownFormFieldState<T>
             validator: widget.validator,
             decoration: InputDecoration(
               filled: true,
-              fillColor: AppColors.white,
+              fillColor: widget.fillColor ?? AppColors.white,
               errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius:
+                      BorderRadius.circular(widget.borderRadius ?? 50),
                   borderSide: BorderSide(
                       color: widget.borderColor ?? AppColors.white, width: 2)),
               border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius:
+                      BorderRadius.circular(widget.borderRadius ?? 50),
                   borderSide: BorderSide(
                       color: widget.borderColor ?? AppColors.white, width: .5)),
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius:
+                      BorderRadius.circular(widget.borderRadius ?? 50),
                   borderSide: BorderSide(
                       color: widget.borderColor ?? AppColors.white, width: .5)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide:
-                      const BorderSide(color: AppColors.primary, width: 1.5)),
+                  borderRadius:
+                      BorderRadius.circular(widget.borderRadius ?? 50),
+                  borderSide: BorderSide(
+                      color: widget.borderColor ?? AppColors.primary,
+                      width: 1.5)),
               isDense: true,
               labelText: null,
               contentPadding: widget.padding ??

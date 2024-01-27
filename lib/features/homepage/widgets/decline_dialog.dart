@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ojembaa_courier/features/homepage/providers/accept_delivery_provider.dart';
+import 'package:ojembaa_courier/features/homepage/providers/get_requests_provider.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_button.dart';
+import 'package:ojembaa_courier/utils/widgets/snackbar.dart';
 
 class DeclineDialog extends StatefulWidget {
   const DeclineDialog({
     super.key,
+    required this.deliveryId,
+    required this.onSuccess,
   });
-
+  final String deliveryId;
+  final VoidCallback onSuccess;
   @override
   State<DeclineDialog> createState() => _DeclineDialogState();
 }
@@ -55,15 +62,36 @@ class _DeclineDialogState extends State<DeclineDialog> {
                       }))
                   .toList(),
             ),
-            CustomContinueButton(
-              onPressed: () {},
-              topPadding: context.width(.06),
-              elevation: 0,
-              bgColor: const Color(0xff707070),
-              innerTopPadding: context.width(.035),
-              sidePadding: 10,
-              title: "Submit",
-            )
+            Consumer(builder: (context, ref, child) {
+              return CustomContinueButton(
+                onPressed: () {
+                  ref
+                      .read(acceptDeliveryProvider("reject").notifier)
+                      .acceptDelivery(
+                          id: widget.deliveryId,
+                          status: "reject",
+                          onSuccess: () {
+                            ref
+                                .read(getRequestsProvider.notifier)
+                                .getRequests();
+                            widget.onSuccess();
+                          },
+                          onError: (p0) {
+                            Navigator.pop(context);
+                            CustomSnackbar.showErrorSnackBar(context,
+                                message: p0);
+                          });
+                },
+                topPadding: context.width(.06),
+                isActive:
+                    !ref.watch(acceptDeliveryProvider("reject")).isLoading,
+                elevation: 0,
+                bgColor: const Color(0xff707070),
+                innerTopPadding: context.width(.035),
+                sidePadding: 10,
+                title: "Submit",
+              );
+            })
           ]);
     });
   }

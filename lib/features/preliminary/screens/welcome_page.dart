@@ -9,10 +9,8 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        return Future.value(false);
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         backgroundColor: AppColors.accent,
         body: Padding(
@@ -30,4 +28,3 @@ class WelcomePage extends StatelessWidget {
     );
   }
 }
-

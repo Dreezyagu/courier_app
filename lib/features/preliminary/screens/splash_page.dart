@@ -4,6 +4,7 @@ import 'package:ojembaa_courier/features/preliminary/screens/welcome_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
+import 'package:ojembaa_courier/utils/data_util/notifications_util.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,6 +16,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
+    NotificationsUtil().setUpFirebaseMessaging(context);
     Future.delayed(
       const Duration(seconds: 3),
       () {

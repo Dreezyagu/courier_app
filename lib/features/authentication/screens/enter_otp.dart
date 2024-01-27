@@ -183,6 +183,7 @@ class _EnterOTPState extends ConsumerState<EnterOTP> {
                 final reader = ref.read(otpProvider.notifier);
                 return CustomContinueButton(
                   sidePadding: 0,
+                  disabledBgColor: AppColors.hintColor.withOpacity(.5),
                   onPressed: () {
                     reader.verifyOtp(
                       email: ref.watch(signUpProvider).data?.email ?? "",

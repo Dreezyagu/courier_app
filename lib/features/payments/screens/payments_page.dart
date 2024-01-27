@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ojembaa_courier/features/payments/providers/get_balance_provider.dart';
+import 'package:ojembaa_courier/features/payments/providers/get_transactions_provider.dart';
 import 'package:ojembaa_courier/features/payments/screens/reconcile_page.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
+import 'package:ojembaa_courier/utils/components/utitlity.dart';
 import 'package:ojembaa_courier/utils/widgets/asset_icon.dart';
 import 'package:ojembaa_courier/utils/widgets/circle.dart';
 import 'package:ojembaa_courier/utils/widgets/white_pill.dart';
@@ -12,6 +15,7 @@ class PaymentsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(getTransactionsProvider).data;
     return Scaffold(
       body: Stack(
         children: [
@@ -35,16 +39,20 @@ class PaymentsPage extends ConsumerWidget {
                         ),
                       ),
                       SizedBox(height: context.width(.04)),
-                      Text(
-                        "-₦11,400",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: context.width(.13),
-                          fontWeight: FontWeight.w700,
-                          fontFamilyFallback: const ["Work Sans"],
-                          color: AppColors.white,
-                        ),
-                      ),
+                      Consumer(builder: (context, ref, child) {
+                        final data = ref.watch(getBalanceProvider).data;
+                        return Text(
+                          Utility.currencyConverter(
+                              Utility.convertToRealNumber(data ?? "0")),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: context.width(.13),
+                            fontWeight: FontWeight.w700,
+                            fontFamilyFallback: const ["Work Sans"],
+                            color: AppColors.white,
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -62,7 +70,7 @@ class PaymentsPage extends ConsumerWidget {
                         children: [
                           SizedBox(height: context.width(.17)),
                           Text(
-                            "Reconciliation history",
+                            "Transaction history",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: context.width(.045),
@@ -70,46 +78,83 @@ class PaymentsPage extends ConsumerWidget {
                             ),
                           ),
                           SizedBox(height: context.width(.04)),
-                          Expanded(
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: 10,
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) => WhitePill(
-                                  borderRadius: 10,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: context.width(.04),
-                                      horizontal: context.width(.06)),
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: context.width(.02)),
-                                  color: const Color(0xffE2E2E2),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "12/08/2023",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: context.width(.045),
-                                          color: AppColors.accent,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Text(
-                                        "- ₦4,000",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: context.width(.045),
-                                          fontFamilyFallback: const [
-                                            "Work Sans"
+                          if (data != null)
+                            Expanded(
+                              child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: data.length,
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    final mainData = data[index];
+                                    return WhitePill(
+                                        borderRadius: 10,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: context.width(.03),
+                                            horizontal: context.width(.04)),
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: context.width(.02)),
+                                        color: AppColors.white,
+                                        boxBorder: Border.all(
+                                            color: const Color(0xffE5E7EB)),
+                                        child: Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  mainData.type
+                                                          ?.toLowerCase()
+                                                          .capitalize() ??
+                                                      "",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        context.width(.04),
+                                                    color: AppColors.accent,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  Utility.dateConvertedNoDay(
+                                                      Utility.convertStringToDate(
+                                                          mainData.createdAt ??
+                                                              "")),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        context.width(.033),
+                                                    color:
+                                                        const Color(0xff9CA3AF),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const Spacer(),
+                                            Text(
+                                              "${mainData.type == "DELIVERY" ? "-" : "+"}${Utility.currencyConverter(double.parse(mainData.amount ?? "0"))}",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: context.width(.045),
+                                                fontWeight: FontWeight.w500,
+                                                fontFamilyFallback: const [
+                                                  "Work Sans"
+                                                ],
+                                                color: mainData.status ==
+                                                        "pending"
+                                                    ? const Color(0xffF7CB73)
+                                                    : mainData.type ==
+                                                            "DELIVERY"
+                                                        ? const Color(
+                                                            0xFFDC2626)
+                                                        : const Color(
+                                                            0xFF00B35C),
+                                              ),
+                                            ),
                                           ],
-                                          color: AppColors.green,
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                          )
+                                        ));
+                                  }),
+                            )
                         ],
                       ),
                     ),

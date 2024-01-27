@@ -1,18 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ojembaa_courier/features/homepage/model/delivery_model.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
-import 'package:ojembaa_courier/utils/components/image_util.dart';
+import 'package:ojembaa_courier/utils/components/utitlity.dart';
 import 'package:ojembaa_courier/utils/widgets/asset_icon.dart';
 import 'package:ojembaa_courier/utils/widgets/circle.dart';
 import 'package:ojembaa_courier/utils/widgets/white_pill.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DeliverySummaryWidget extends StatelessWidget {
   const DeliverySummaryWidget({
     super.key,
     this.extraWidget = const SizedBox.shrink(),
+    required this.delivery,
   });
 
   final Widget extraWidget;
+  final DeliveryModel delivery;
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +36,25 @@ class DeliverySummaryWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Image.asset(
-                    ImageUtil.test_image,
-                    height: context.height(.08),
-                  ),
+                  SizedBox(
+                      height: context.width(.15),
+                      width: context.width(.15),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          imageUrl: delivery.package?.photoUrls?.first ?? "",
+                          placeholder: (context, url) => Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: const ColoredBox(
+                                color: AppColors.white,
+                              )),
+                          errorWidget: (context, url, error) => const SizedBox(
+                            child: ColoredBox(color: AppColors.hintColor),
+                          ),
+                          fit: BoxFit.fill,
+                        ),
+                      )),
                   SizedBox(
                     width: context.width(.04),
                   ),
@@ -43,19 +63,13 @@ class DeliverySummaryWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Electronic Wall Clock",
+                          delivery.package?.description ?? "",
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: AppColors.white,
                               fontSize: context.width(.045)),
                         ),
                         SizedBox(height: context.height(.005)),
-                        Text(
-                          "Tracking #ID: 0208322773",
-                          style: TextStyle(
-                              color: AppColors.white,
-                              fontSize: context.width(.035)),
-                        ),
                       ],
                     ),
                   )
@@ -75,6 +89,7 @@ class DeliverySummaryWidget extends StatelessWidget {
                     fontSize: context.width(.037)),
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.location_on_outlined,
@@ -84,7 +99,7 @@ class DeliverySummaryWidget extends StatelessWidget {
                   SizedBox(width: context.width(.02)),
                   Expanded(
                     child: Text(
-                      "Wuse 2, opp. Atiku house, Abuja.",
+                      "${delivery.pickupAddress}. (${delivery.pickupLandmark})",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: AppColors.white,
@@ -109,12 +124,14 @@ class DeliverySummaryWidget extends StatelessWidget {
                     color: AppColors.white,
                   ),
                   SizedBox(width: context.width(.02)),
-                  Text(
-                    "Maitama NNPC quarters, Abuja. ",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.white,
-                        fontSize: context.width(.037)),
+                  Expanded(
+                    child: Text(
+                      "${delivery.deliveryAddress}. (${delivery.deliveryLandmark})",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.white,
+                          fontSize: context.width(.037)),
+                    ),
                   ),
                 ],
               ),
@@ -132,12 +149,14 @@ class DeliverySummaryWidget extends StatelessWidget {
                         Circle(
                             width: context.width(.065),
                             color: const Color(0xffE2CEA2),
-                            child: const Padding(
-                              padding: EdgeInsets.all(6.0),
-                              child: AssetIcon(icon: "bike"),
+                            child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: AssetIcon(
+                                  icon:
+                                      "${delivery.package?.weight?.toLowerCase()}_delivery"),
                             )),
                         Text(
-                          "  Light delivery",
+                          "  ${delivery.package?.weight?.toLowerCase().capitalize()} delivery",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                               color: AppColors.white,
@@ -146,15 +165,15 @@ class DeliverySummaryWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Text(
-                      "10.3kg",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.white,
-                          fontSize: context.width(.033)),
-                    ),
-                  ),
+                  TextButton(
+                      onPressed: () {
+                        Utility.launchURL(
+                            "https://www.google.com/maps/dir/?api=1&origin=${delivery.pickupLat},${delivery.pickupLog}&destination=${delivery.deliveryLat},${delivery.deliveryLog}");
+                      },
+                      child: const Text(
+                        "View on Google Maps",
+                        style: TextStyle(color: AppColors.primary),
+                      ))
                 ],
               ),
             ],
@@ -193,7 +212,9 @@ class DeliverySummaryWidget extends StatelessWidget {
                                 fontSize: context.width(.035)),
                           ),
                           Text(
-                            "1-3 days",
+                            delivery.deliveryMode == "express"
+                                ? "24hrs"
+                                : "1-3 days",
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.accent,
@@ -214,14 +235,16 @@ class DeliverySummaryWidget extends StatelessWidget {
                             child: Circle(
                                 width: context.width(.05),
                                 color: AppColors.primary,
-                                child: const Padding(
-                                  padding: EdgeInsets.all(4.0),
-                                  child: AssetIcon(icon: "express_delivery"),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: AssetIcon(
+                                      icon:
+                                          "${delivery.deliveryMode}_delivery"),
                                 )),
                           ),
                           SizedBox(width: context.width(.02)),
                           Text(
-                            "Express Delivery",
+                            "${delivery.deliveryMode?.capitalize()} Delivery",
                             style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: context.width(.033)),
@@ -260,7 +283,8 @@ class DeliverySummaryWidget extends StatelessWidget {
                         fontSize: context.width(.033)),
                   ),
                   Text(
-                    "₦15,000",
+                    Utility.currencyConverter(
+                        Utility.convertToRealNumber(delivery.totalCost ?? "0")),
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: AppColors.red,

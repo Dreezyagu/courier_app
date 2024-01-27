@@ -3,7 +3,7 @@ class ImageUtil {
 
   static const email = "assets/icons/email.svg";
   static const big_icon = "assets/icons/big_icon.svg";
-  static const car = "assets/icons/car.svg";
+  static const medium_delivery = "assets/icons/medium_delivery.svg";
   static const password = "assets/icons/password.svg";
   static const camera = "assets/icons/camera.svg";
   static const add_picture = "assets/icons/add_picture.svg";
@@ -18,6 +18,8 @@ class ImageUtil {
   static const guarantor = "assets/icons/guarantor.svg";
   static const wallet = "assets/icons/wallet.svg";
   static const deliveries = "assets/icons/deliveries.svg";
+  static const delivery_confirmed = "assets/icons/delivery_confirmed.svg";
+
 
   static const icon_title = "assets/images/icon_title.svg";
   static const icon_title_accent = "assets/images/icon_title_accent.svg";

@@ -1,4 +1,4 @@
-package com.example.ojembaa_courier
+package com.ojembaa.courier
 
 import io.flutter.embedding.android.FlutterActivity
 
