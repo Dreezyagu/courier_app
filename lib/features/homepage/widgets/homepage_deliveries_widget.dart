@@ -148,10 +148,9 @@ class _HomepageDeliveriesWidgetState
           if (!isOnline)
             Column(
               children: [
-                SizedBox(height: context.width(.08)),
                 SvgPicture.asset(
                   ImageUtil.courier_offline,
-                  height: context.width(.6),
+                  height: context.width(.45),
                 ),
                 Text(
                   "Offline",

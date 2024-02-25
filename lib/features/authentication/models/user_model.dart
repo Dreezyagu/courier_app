@@ -28,6 +28,9 @@ class UserModel {
   final List<Tools>? tools;
   final List<BankInformation>? bankInformation;
   final List<Guarantor>? guarantor;
+  final int? rating;
+  final int? totalRating;
+  final int? deliveries;
 
   UserModel(
       this.username,
@@ -55,7 +58,10 @@ class UserModel {
       this.updatedAt,
       this.tools,
       this.bankInformation,
-      this.guarantor);
+      this.guarantor,
+      this.rating,
+      this.totalRating,
+      this.deliveries);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -85,6 +91,9 @@ class UserModel {
       'tools': tools?.map((x) => x.toMap()).toList(),
       'bankInformation': bankInformation?.map((x) => x.toMap()).toList(),
       'guarantor': guarantor?.map((x) => x.toMap()).toList(),
+      'rating': rating,
+      'totalRating': totalRating,
+      'deliveries': deliveries,
     };
   }
 
@@ -136,6 +145,9 @@ class UserModel {
               ),
             )
           : null,
+      map['rating'] != null ? map['rating'] as int : null,
+      map['totalRating'] != null ? map['totalRating'] as int : null,
+      map['deliveries'] != null ? map['deliveries'] as int : null,
     );
   }
 

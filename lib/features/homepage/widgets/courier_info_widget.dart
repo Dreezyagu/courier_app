@@ -47,22 +47,22 @@ class CourierInfoWidget extends StatelessWidget {
                 borderRadius: 15,
                 padding: EdgeInsets.all(context.width(.06)),
                 color: AppColors.primary,
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CourierRowInfo(
                       icon: "star",
-                      value: "4.5",
+                      value: double.parse("${data?.rating ?? 5}").toString(),
                       title: "Rating",
                     ),
-                    CourierRowInfo(
+                    const CourierRowInfo(
                       icon: "speedometer",
                       value: "0KM",
                       title: "Est. distance covered",
                     ),
                     CourierRowInfo(
                       icon: "medium_delivery",
-                      value: "0",
+                      value: "${data?.deliveries ?? 0}",
                       title: "Deliveries",
                     ),
                   ],

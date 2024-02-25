@@ -67,7 +67,7 @@ class AuthServices {
   ) async {
     try {
       final response = await dio.post("$baseUrl$signInUrl",
-          data: {"email": email, "password": password});
+          data: {"email": email, "password": password, "platform": "courier"});
 
       if (response.data["status"] == "success") {
         return (
