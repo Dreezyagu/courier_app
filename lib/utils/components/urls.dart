@@ -1,10 +1,10 @@
 const Map<String, String> URL_TEST = {
-  "baseUrl": "https://stg-api.ojembaa.com/api/v1/",
+  "baseUrl": "https://api.ojembaa.com/api/v1/",
   "placesAPIKey": "AIzaSyADKIDZ_aYQaVYtCsD13_cHrlU8BKv0cA0",
 };
 
 const Map<String, String> URL_PROD = {
-  "baseUrl": "https://stg-api.ojembaa.com/api/v1/",
+  "baseUrl": "https://api.ojembaa.com/api/v1/",
   "placesAPIKey": "AIzaSyADKIDZ_aYQaVYtCsD13_cHrlU8BKv0cA0",
 };
 
