@@ -45,149 +45,158 @@ class _UploadPictureState extends ConsumerState<UploadPicture> {
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: context.width(.06), vertical: context.height(.015)),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hi ${ref.watch(userProvider).data?.firstName}",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: context.width(.062),
-                    color: AppColors.black,
-                    fontWeight: FontWeight.w700),
-              ),
-              SizedBox(height: context.height(.005)),
-              Text(
-                "Just a few more steps\nto set up your account.",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontSize: context.width(.04), color: AppColors.black),
-              ),
-              SizedBox(height: context.height(.035)),
-              const StageBarWidget(level: 1),
-              SizedBox(height: context.height(.015)),
-              Row(
-                children: [
-                  Circle(
-                      borderColor: AppColors.accent,
-                      width: context.width(.07),
-                      color: AppColors.primary,
-                      child: Padding(
-                        padding: const EdgeInsets.all(7.0),
-                        child: SvgPicture.asset(ImageUtil.camera),
-                      )),
-                  SizedBox(width: context.width(.02)),
-                  Text(
-                    "Upload a nice headshot",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: context.width(.035), color: AppColors.accent),
-                  ),
-                ],
-              ),
-              SizedBox(height: context.height(.05)),
-              Consumer(builder: (context, ref, child) {
-                const String key = "Profile Pic";
-                final reader = ref.read(uploadAssetProvider(key).notifier);
-                final data = ref.watch(uploadAssetProvider(key));
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Hi ${ref.watch(userProvider).data?.firstName}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: context.width(.062),
+                      color: AppColors.black,
+                      fontWeight: FontWeight.w700),
+                ),
+                SizedBox(height: context.height(.005)),
+                Text(
+                  "Just a few more steps\nto set up your account.",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: context.width(.04), color: AppColors.black),
+                ),
+                SizedBox(height: context.height(.035)),
+                const StageBarWidget(level: 1),
+                SizedBox(height: context.height(.015)),
+                Row(
+                  children: [
+                    Circle(
+                        borderColor: AppColors.accent,
+                        width: context.width(.07),
+                        color: AppColors.primary,
+                        child: Padding(
+                          padding: const EdgeInsets.all(7.0),
+                          child: SvgPicture.asset(ImageUtil.camera),
+                        )),
+                    SizedBox(width: context.width(.02)),
+                    Text(
+                      "Upload a nice headshot",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: context.width(.035),
+                          color: AppColors.accent),
+                    ),
+                  ],
+                ),
+                SizedBox(height: context.height(.05)),
+                Consumer(builder: (context, ref, child) {
+                  const String key = "Profile Pic";
+                  final reader = ref.read(uploadAssetProvider(key).notifier);
+                  final data = ref.watch(uploadAssetProvider(key));
 
-                return InkWell(
-                    onTap: () {
-                      if (Platform.isIOS) {
-                        showCupertinoModalPopup(
-                            context: context,
-                            builder: (context) => ImagePickerWidget(
-                                  onImageSelected: (XFile val) {
-                                    _file = File(val.path);
-                                    profilePicUrl = null;
-                                    if (_file != null) {
-                                      reader.uploadPicture(
-                                          file: _file!,
-                                          onSuccess: (String url) {
-                                            setState(() {
-                                              profilePicUrl = url;
+                  return InkWell(
+                      onTap: () {
+                        if (Platform.isIOS) {
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (context) => ImagePickerWidget(
+                                    onImageSelected: (XFile val) {
+                                      _file = File(val.path);
+                                      profilePicUrl = null;
+                                      if (_file != null) {
+                                        reader.uploadPicture(
+                                            file: _file!,
+                                            onSuccess: (String url) {
+                                              setState(() {
+                                                profilePicUrl = url;
+                                              });
+
+                                              CustomSnackbar
+                                                  .showSuccessSnackBar(
+                                                      _scaffoldKey
+                                                          .currentContext!,
+                                                      message:
+                                                          "Upload successful");
+                                            },
+                                            onError: (p0) {
+                                              _file = null;
+                                              profilePicUrl = null;
+
+                                              CustomSnackbar.showErrorSnackBar(
+                                                  _scaffoldKey.currentContext!,
+                                                  message: p0);
                                             });
+                                      }
+                                    },
+                                    onCanceled: () => Navigator.pop(context),
+                                  ));
+                        } else {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) => ImagePickerWidget(
+                                    onImageSelected: (XFile val) {
+                                      _file = File(val.path);
+                                      profilePicUrl = null;
+                                      if (_file != null) {
+                                        reader.uploadPicture(
+                                            file: _file!,
+                                            onSuccess: (String url) {
+                                              setState(() {
+                                                profilePicUrl = url;
+                                              });
 
-                                            CustomSnackbar.showSuccessSnackBar(
-                                                _scaffoldKey.currentContext!,
-                                                message: "Upload successful");
-                                          },
-                                          onError: (p0) {
-                                            _file = null;
-                                            profilePicUrl = null;
+                                              CustomSnackbar
+                                                  .showSuccessSnackBar(
+                                                      _scaffoldKey
+                                                          .currentContext!,
+                                                      message:
+                                                          "Upload successful");
+                                            },
+                                            onError: (p0) {
+                                              _file = null;
+                                              profilePicUrl = null;
 
-                                            CustomSnackbar.showErrorSnackBar(
-                                                _scaffoldKey.currentContext!,
-                                                message: p0);
-                                          });
-                                    }
-                                  },
-                                  onCanceled: () => Navigator.pop(context),
-                                ));
-                      } else {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) => ImagePickerWidget(
-                                  onImageSelected: (XFile val) {
-                                    _file = File(val.path);
-                                    profilePicUrl = null;
-                                    if (_file != null) {
-                                      reader.uploadPicture(
-                                          file: _file!,
-                                          onSuccess: (String url) {
-                                            setState(() {
-                                              profilePicUrl = url;
+                                              CustomSnackbar.showErrorSnackBar(
+                                                  _scaffoldKey.currentContext!,
+                                                  message: p0);
                                             });
-
-                                            CustomSnackbar.showSuccessSnackBar(
-                                                _scaffoldKey.currentContext!,
-                                                message: "Upload successful");
-                                          },
-                                          onError: (p0) {
-                                            _file = null;
-                                            profilePicUrl = null;
-
-                                            CustomSnackbar.showErrorSnackBar(
-                                                _scaffoldKey.currentContext!,
-                                                message: p0);
-                                          });
-                                    }
-                                  },
-                                  onCanceled: () => Navigator.pop(context),
-                                ));
-                      }
-                    },
-                    child: profilePicUrl != null
-                        ? SizedBox(
-                            height: context.width(.7),
-                            width: double.infinity,
-                            child: Image.file(_file!))
-                        : AddPictureWidget(
-                            isLoading: data.isLoading,
-                          ));
-              }),
-              SizedBox(height: context.height(.05)),
-              CustomContinueButton(
-                onPressed: () {
-                  if (profilePicUrl == null) {
-                    CustomSnackbar.showErrorSnackBar(context,
-                        message: "Please upload a picture of yourself");
-                    return;
-                  }
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UploadID(
-                          payload: {"profilePhoto": profilePicUrl!},
-                        ),
-                      ));
-                },
-                sidePadding: 0,
-                disabledBgColor: AppColors.hintColor.withOpacity(.5),
-              )
-            ],
+                                      }
+                                    },
+                                    onCanceled: () => Navigator.pop(context),
+                                  ));
+                        }
+                      },
+                      child: profilePicUrl != null
+                          ? SizedBox(
+                              height: context.width(.7),
+                              width: double.infinity,
+                              child: Image.file(_file!))
+                          : AddPictureWidget(
+                              isLoading: data.isLoading,
+                            ));
+                }),
+                SizedBox(height: context.height(.05)),
+                CustomContinueButton(
+                  onPressed: () {
+                    if (profilePicUrl == null) {
+                      CustomSnackbar.showErrorSnackBar(context,
+                          message: "Please upload a picture of yourself");
+                      return;
+                    }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UploadID(
+                            payload: {"profilePhoto": profilePicUrl!},
+                          ),
+                        ));
+                  },
+                  sidePadding: 0,
+                  disabledBgColor: AppColors.hintColor.withOpacity(.5),
+                )
+              ],
+            ),
           ),
         ),
       ),
