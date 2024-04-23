@@ -36,6 +36,7 @@ class _HomepageDeliveriesWidgetState
 
   requestPermission() async {
     permission = await Geolocator.requestPermission();
+    ref.read(getLocationProvider.notifier).getCurrentLocation();
   }
 
   @override
