@@ -36,12 +36,7 @@ class _UploadPictureState extends ConsumerState<UploadPicture> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: AppColors.white_background,
-      appBar: CustomAppBar(
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.pop(context);
-        },
-      ),
+      appBar: const CustomAppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: context.width(.06), vertical: context.height(.015)),

@@ -34,7 +34,7 @@ class StorageHelper {
   static void setBoolean(String key, bool? value) async {
     if (key.isEmpty) return;
     final SharedPreferences preferences = await (_getInstance());
-    preferences.setBool(key, value!);
+    preferences.setBool(key, value ?? false);
   }
 
   static void remove(String key) async {

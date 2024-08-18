@@ -37,6 +37,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool obscure = true;
+  bool? rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -111,27 +112,49 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               )),
                         ),
                       ),
-                      SizedBox(height: context.height(.025)),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ForgotPassword(),
-                              ));
-                        },
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Forgot your password?",
+                      SizedBox(height: context.height(.01)),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: rememberMe,
+                            onChanged: (value) {
+                              setState(() {
+                                rememberMe = value;
+                              });
+                            },
+                          ),
+                          Text(
+                            "Remember me",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: context.width(.04),
                                 fontWeight: FontWeight.w400),
                           ),
-                        ),
+                          const Spacer(),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPassword(),
+                                  ));
+                            },
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Forgot password?",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: AppColors.red,
+                                    fontSize: context.width(.04),
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: context.height(.01)),
+                      SizedBox(height: context.height(.025)),
                       Consumer(
                         builder: (context, ref, child) {
                           final watcher = ref.watch(signInProvider);
@@ -139,6 +162,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           return CustomContinueButton(
                             onPressed: () {
                               FocusScope.of(context).unfocus();
+                              StorageHelper.setBoolean(
+                                  StorageKeys.rememberMeKey, rememberMe);
                               if (_formKey.currentState?.validate() == true) {
                                 reader.signIn(
                                     onError: (p0) =>

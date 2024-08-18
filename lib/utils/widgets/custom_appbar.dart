@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ojembaa_courier/features/authentication/screens/login_page.dart';
+import 'package:ojembaa_courier/utils/helpers/storage/storage_helper.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
@@ -25,7 +27,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             onPressed: onTap ??
                 () {
-                  Navigator.pop(context);
+                  if (ModalRoute.of(context)?.isFirst ?? true) {
+                    StorageHelper.clearPreferences();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          settings: const RouteSettings(name: "/loginPage"),
+                          builder: (context) => const LoginPage(),
+                        ));
+                  } else {
+                    Navigator.pop(context);
+                  }
                 },
             icon: const Icon(
               Icons.arrow_back,

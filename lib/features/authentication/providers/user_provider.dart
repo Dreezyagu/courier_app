@@ -23,6 +23,11 @@ class UserProvider extends StateNotifier<BaseNotifier<UserModel>> {
       }
     }
   }
+
+  void updateUserModel(UserModel user) {
+    state = BaseNotifier.setLoading();
+    state = BaseNotifier.setDone<UserModel>(user);
+  }
 }
 
 final userProvider =

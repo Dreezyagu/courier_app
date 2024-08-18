@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -7,6 +8,8 @@ import 'package:ojembaa_courier/features/authentication/models/user_model.dart';
 import 'package:ojembaa_courier/utils/components/urls.dart';
 import 'package:ojembaa_courier/utils/data_util/error_model.dart';
 import 'package:ojembaa_courier/utils/helpers/http/http_helper.dart';
+import 'package:ojembaa_courier/utils/helpers/storage/storage_helper.dart';
+import 'package:ojembaa_courier/utils/helpers/storage/storage_keys.dart';
 import 'package:path/path.dart';
 
 class AuthServices {
@@ -96,6 +99,8 @@ class AuthServices {
       );
 
       if (response.data["status"] == "success") {
+        StorageHelper.setString(
+            StorageKeys.userModelKey, jsonEncode(response.data["data"]));
         final data = UserModel.fromMap(response.data["data"]);
         return (success: data, error: null);
       } else {
@@ -150,6 +155,8 @@ class AuthServices {
           await dio.patch("$baseUrl$updateProfileUrl/$id", body: payload);
 
       if (response.data["status"] == "success") {
+        StorageHelper.setString(
+            StorageKeys.userModelKey, jsonEncode(response.data["data"]));
         final data = UserModel.fromMap(response.data["data"]);
         return (success: data, error: null);
       } else {

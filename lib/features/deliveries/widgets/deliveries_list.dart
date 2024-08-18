@@ -44,198 +44,189 @@ class DeliveriesList extends ConsumerWidget {
         );
       }
 
-      return Expanded(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Delivery Request",
-                style: TextStyle(
-                  fontSize: context.width(.045),
-                ),
-              ),
-              Scrollbar(
-                controller: firstController,
-                thumbVisibility: true,
-                child: ListView.builder(
-                  itemCount: data.length,
-                  controller: firstController,
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final delivery = data[index];
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Delivery Request",
+            style: TextStyle(
+              fontSize: context.width(.045),
+            ),
+          ),
+          Scrollbar(
+            controller: firstController,
+            thumbVisibility: true,
+            child: ListView.builder(
+              itemCount: data.length,
+              controller: firstController,
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                final delivery = data[index];
 
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DeliveryDetails(
-                                  delivery: delivery, distance: distance),
-                            ));
-                      },
-                      child: WhitePill(
-                          borderRadius: 20,
-                          margin: EdgeInsets.symmetric(
-                              vertical: context.width(.02)),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: context.width(.06),
-                              vertical: context.width(.03)),
-                          child: Column(
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DeliveryDetails(
+                              delivery: delivery, distance: distance),
+                        ));
+                  },
+                  child: WhitePill(
+                      borderRadius: 20,
+                      margin:
+                          EdgeInsets.symmetric(vertical: context.width(.02)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: context.width(.06),
+                          vertical: context.width(.03)),
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  delivery.package?.description ?? "",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: context.width(.048)),
+                                ),
+                              ),
+                              Text(
+                                Utility.dateConvertedNoDay(
+                                    DateTime.parse(delivery.createdAt!),
+                                    format: 'dd MMM yyyy, hh:mm a'),
+                                style: TextStyle(fontSize: context.width(.033)),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: context.width(.03)),
+                          Row(
                             children: [
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Expanded(
-                                    child: Text(
-                                      delivery.package?.description ?? "",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: context.width(.048)),
-                                    ),
-                                  ),
+                                  Circle(
+                                      width: context.width(.05),
+                                      color: const Color(0xffFEE5B4),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(3.5),
+                                        child: AssetIcon(
+                                            icon:
+                                                "${delivery.package?.weight?.toLowerCase()}_delivery"),
+                                      )),
                                   Text(
-                                    Utility.dateConvertedNoDay(
-                                        DateTime.parse(delivery.createdAt!),
-                                        format: 'dd MMM yyyy, hh:mm a'),
-                                    style: TextStyle(
-                                        fontSize: context.width(.033)),
+                                    "  ${delivery.package?.weight?.toLowerCase().capitalize()} delivery",
+                                    style:
+                                        TextStyle(fontSize: context.width(.03)),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: context.width(.03)),
+                              SizedBox(width: context.width(.02)),
                               Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Circle(
-                                          width: context.width(.05),
-                                          color: const Color(0xffFEE5B4),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(3.5),
-                                            child: AssetIcon(
-                                                icon:
-                                                    "${delivery.package?.weight?.toLowerCase()}_delivery"),
-                                          )),
-                                      Text(
-                                        "  ${delivery.package?.weight?.toLowerCase().capitalize()} delivery",
-                                        style: TextStyle(
-                                            fontSize: context.width(.03)),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(width: context.width(.02)),
-                                  Row(
-                                    children: [
-                                      Circle(
-                                          width: context.width(.05),
-                                          color: AppColors.primary,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(3.5),
-                                            child: AssetIcon(
-                                                icon:
-                                                    "${delivery.deliveryMode}_delivery"),
-                                          )),
-                                      Text(
-                                        "  ${delivery.deliveryMode?.capitalize()} Delivery",
-                                        style: TextStyle(
-                                            fontSize: context.width(.03)),
-                                      ),
-                                    ],
+                                  Circle(
+                                      width: context.width(.05),
+                                      color: AppColors.primary,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(3.5),
+                                        child: AssetIcon(
+                                            icon:
+                                                "${delivery.deliveryMode}_delivery"),
+                                      )),
+                                  Text(
+                                    "  ${delivery.deliveryMode?.capitalize()} Delivery",
+                                    style:
+                                        TextStyle(fontSize: context.width(.03)),
                                   ),
                                 ],
                               ),
-                              if (delivery.status?.toLowerCase().trim() ==
-                                  "scheduled")
-                                Consumer(builder: (context, ref, child) {
-                                  final data =
-                                      ref.watch(getLocationProvider).data;
-
-                                  if (data != null) {
-                                    distance = delivery.distance != null
-                                        ? double.parse(delivery.distance!)
-                                        : Utility.calculateDistance(
-                                            data.latitude,
-                                            data.longitude,
-                                            double.parse(delivery.pickupLat!),
-                                            double.parse(delivery.pickupLog!));
-                                    return Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Column(
-                                        children: [
-                                          SizedBox(height: context.width(.03)),
-                                          Text(
-                                            "${distance}KM Away".commalise(),
-                                            style: TextStyle(
-                                                color: AppColors.accent,
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: context.width(.04)),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }
-                                  return const SizedBox.shrink();
-                                }),
-                              if (delivery.status?.toLowerCase().trim() !=
-                                  "scheduled")
-                                Column(
-                                  children: [
-                                    SizedBox(height: context.width(.03)),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: WhitePill(
-                                        color: AppColors.accent,
-                                        margin: EdgeInsets.zero,
-                                        borderRadius: 10,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: context.width(.03),
-                                            vertical: context.width(.015)),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Circle(
-                                                color: delivery.status
-                                                            ?.trim() ==
-                                                        "ENROUTE_PICKUP"
-                                                    ? AppColors.white
-                                                    : delivery.status ==
-                                                                "DELIVERED" ||
-                                                            delivery.status ==
-                                                                "COMPLETED"
-                                                        ? AppColors.green
-                                                        : delivery.status ==
-                                                                "IN_PROGRESS"
-                                                            ? AppColors.primary
-                                                            : AppColors.red,
-                                                width: context.width(.015),
-                                                child: const SizedBox.shrink()),
-                                            Text(
-                                              "  ${delivery.status?.replaceFirst("_", " ").toLowerCase().capitalizeAllWord()}",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors.white,
-                                                  fontSize:
-                                                      context.width(.033)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                             ],
-                          )),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
-        ),
+                          ),
+                          if (delivery.status?.toLowerCase().trim() ==
+                              "scheduled")
+                            Consumer(builder: (context, ref, child) {
+                              final data = ref.watch(getLocationProvider).data;
+
+                              if (data != null) {
+                                distance = delivery.distance != null
+                                    ? double.parse(delivery.distance!)
+                                    : Utility.calculateDistance(
+                                        data.latitude,
+                                        data.longitude,
+                                        double.parse(delivery.pickupLat!),
+                                        double.parse(delivery.pickupLog!));
+                                return Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: context.width(.03)),
+                                      Text(
+                                        "${distance}KM Away".commalise(),
+                                        style: TextStyle(
+                                            color: AppColors.accent,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: context.width(.04)),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            }),
+                          if (delivery.status?.toLowerCase().trim() !=
+                              "scheduled")
+                            Column(
+                              children: [
+                                SizedBox(height: context.width(.03)),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: WhitePill(
+                                    color: AppColors.accent,
+                                    margin: EdgeInsets.zero,
+                                    borderRadius: 10,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: context.width(.03),
+                                        vertical: context.width(.015)),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Circle(
+                                            color: delivery.status?.trim() ==
+                                                    "ENROUTE_PICKUP"
+                                                ? AppColors.white
+                                                : delivery.status ==
+                                                            "DELIVERED" ||
+                                                        delivery.status ==
+                                                            "COMPLETED"
+                                                    ? AppColors.green
+                                                    : delivery.status ==
+                                                            "IN_PROGRESS"
+                                                        ? AppColors.primary
+                                                        : AppColors.red,
+                                            width: context.width(.015),
+                                            child: const SizedBox.shrink()),
+                                        Text(
+                                          "  ${delivery.status?.replaceFirst("_", " ").toLowerCase().capitalizeAllWord()}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.white,
+                                              fontSize: context.width(.033)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      )),
+                );
+              },
+            ),
+          )
+        ],
       );
     });
   }

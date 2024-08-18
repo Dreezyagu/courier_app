@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
+import 'package:ojembaa_courier/features/authentication/screens/login_page.dart';
 import 'package:ojembaa_courier/features/profile/widgets/profile_tile.dart';
 import 'package:ojembaa_courier/utils/components/colors.dart';
 import 'package:ojembaa_courier/utils/components/extensions.dart';
 import 'package:ojembaa_courier/utils/components/image_util.dart';
+import 'package:ojembaa_courier/utils/helpers/storage/storage_helper.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_appbar.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_button.dart';
 import 'package:ojembaa_courier/utils/widgets/custom_textfield.dart';
@@ -115,8 +117,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 )),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.popUntil(context,
-                                      ModalRoute.withName("/loginPage"));
+                                  StorageHelper.clearPreferences();
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        settings: const RouteSettings(
+                                            name: "/loginPage"),
+                                        builder: (context) => const LoginPage(),
+                                      ));
                                 },
                                 child: Text(
                                   "Yes",
@@ -202,10 +210,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                                   Future.delayed(
                                                     const Duration(seconds: 90),
                                                     () {
-                                                      Navigator.popUntil(
+                                                      StorageHelper
+                                                          .clearPreferences();
+                                                      Navigator.pushReplacement(
                                                           context,
-                                                          ModalRoute.withName(
-                                                              "/loginPage"));
+                                                          MaterialPageRoute(
+                                                            settings:
+                                                                const RouteSettings(
+                                                                    name:
+                                                                        "/loginPage"),
+                                                            builder: (context) =>
+                                                                const LoginPage(),
+                                                          ));
                                                     },
                                                   );
                                                 }

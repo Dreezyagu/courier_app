@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Ojembaa Courier',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           fontFamily: "QanelasSoft",
           appBarTheme: const AppBarTheme(
