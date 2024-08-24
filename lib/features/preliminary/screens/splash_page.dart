@@ -6,6 +6,7 @@ import 'package:ojembaa_courier/features/authentication/providers/get_banks_prov
 import 'package:ojembaa_courier/features/authentication/providers/user_provider.dart';
 import 'package:ojembaa_courier/features/authentication/screens/enter_bank_details.dart';
 import 'package:ojembaa_courier/features/authentication/screens/guarantor_info.dart';
+import 'package:ojembaa_courier/features/authentication/screens/login_page.dart';
 import 'package:ojembaa_courier/features/authentication/screens/ownership_proof.dart';
 import 'package:ojembaa_courier/features/authentication/screens/upload_picture.dart';
 import 'package:ojembaa_courier/features/homepage/providers/get_location_provider.dart';
@@ -54,58 +55,77 @@ class _SplashPageState extends ConsumerState<SplashPage> {
         if (values.first != null && user != null && values.last == true) {
           StorageHelper.setString(StorageKeys.userId, user.id);
           ref.read(userProvider.notifier).getDetails(
-                onError: (p0) =>
-                    CustomSnackbar.showErrorSnackBar(context, message: p0),
-                onSuccess: (p0) {
-                  if (p0.profilePhoto == null) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const UploadPicture(),
-                        ));
-                    return;
-                  }
+            onError: (p0) {
+              CustomSnackbar.showErrorSnackBar(context, message: p0);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const WelcomePage(),
+                  ));
+            },
+            onSuccess: (p0) {
+              if (p0.profilePhoto == null) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UploadPicture(),
+                    ));
+                return;
+              }
 
-                  if (p0.tools == null) {
+              if (p0.tools == null) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OwnershipProof(),
+                    ));
+                return;
+              }
+              if (p0.bankInformation == null || p0.bankInformation!.isEmpty) {
+                ref.read(getBanksProvider.notifier).getBanks();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EnterBankDetails(),
+                    ));
+                return;
+              }
+              if (p0.guarantor == null || p0.bankInformation!.isEmpty) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GuarantorInfo(),
+                    ));
+                return;
+              }
+              Future.wait([
+                ref.read(getLocationProvider.notifier).getCurrentLocation(),
+                ref.read(getRequestsProvider.notifier).getRequests(),
+                ref
+                    .read(getTransactionsProvider.notifier)
+                    .getTransactions(p0.id!),
+                ref.read(getBalanceProvider.notifier).getBalance()
+              ]).then(
+                (value) {
+                  if (value.every((element) => element == true)) {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const OwnershipProof(),
+                          settings: const RouteSettings(name: "/mainPage"),
+                          builder: (context) => const NavPage(),
                         ));
-                    return;
-                  }
-                  if (p0.bankInformation == null ||
-                      p0.bankInformation!.isEmpty) {
-                    ref.read(getBanksProvider.notifier).getBanks();
+                  } else {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const EnterBankDetails(),
+                          settings: const RouteSettings(name: "/loginPage"),
+                          builder: (context) => const LoginPage(),
                         ));
-                    return;
                   }
-                  if (p0.guarantor == null || p0.bankInformation!.isEmpty) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const GuarantorInfo(),
-                        ));
-                    return;
-                  }
-                  ref.read(getLocationProvider.notifier).getCurrentLocation();
-                  ref.read(getRequestsProvider.notifier).getRequests();
-                  ref
-                      .read(getTransactionsProvider.notifier)
-                      .getTransactions(p0.id!);
-                  ref.read(getBalanceProvider.notifier).getBalance();
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        settings: const RouteSettings(name: "/mainPage"),
-                        builder: (context) => const NavPage(),
-                      ));
                 },
               );
+            },
+          );
         } else {
           Navigator.push(
               context,

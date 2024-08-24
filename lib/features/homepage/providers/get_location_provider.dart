@@ -6,7 +6,7 @@ import 'package:ojembaa_courier/utils/data_util/base_notifier.dart';
 class GetLocationProvider extends StateNotifier<BaseNotifier<Position>> {
   GetLocationProvider() : super(BaseNotifier<Position>());
 
-  void getCurrentLocation(
+  Future<bool> getCurrentLocation(
       {Function(Position)? onSuccess, Function(String)? onError}) async {
     state = BaseNotifier.setLoading();
     final data2 = await HomeServices.getCurrentLocation();
@@ -15,12 +15,14 @@ class GetLocationProvider extends StateNotifier<BaseNotifier<Position>> {
       if (onSuccess != null) {
         onSuccess(data2.success!);
       }
+      return true;
     } else {
       state = BaseNotifier.setError(data2.error ?? "An error ocurred");
 
       if (onError != null) {
         onError(data2.error ?? "An error ocurred");
       }
+      return false;
     }
   }
 }

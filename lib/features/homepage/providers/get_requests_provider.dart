@@ -8,7 +8,8 @@ class GetRequestsProvider
     extends StateNotifier<BaseNotifier<List<DeliveryModel>>> {
   GetRequestsProvider() : super(BaseNotifier());
 
-  void getRequests({VoidCallback? onSuccess, Function(String)? onError}) async {
+  Future<bool> getRequests(
+      {VoidCallback? onSuccess, Function(String)? onError}) async {
     state = BaseNotifier.setLoading();
     final data = await HomeServices.getRequests();
     if (data.success is List<DeliveryModel>) {
@@ -16,11 +17,13 @@ class GetRequestsProvider
       if (onSuccess != null) {
         onSuccess();
       }
+      return true;
     } else {
       state = BaseNotifier.setError(data.error ?? "An error ocurred");
       if (onError != null) {
         onError(data.error ?? "An error ocurred");
       }
+      return false;
     }
   }
 }

@@ -6,7 +6,8 @@ import 'package:ojembaa_courier/utils/data_util/base_notifier.dart';
 class GetBalanceProvider extends StateNotifier<BaseNotifier<String>> {
   GetBalanceProvider() : super(BaseNotifier());
 
-  void getBalance({VoidCallback? onSuccess, Function(String)? onError}) async {
+  Future<bool> getBalance(
+      {VoidCallback? onSuccess, Function(String)? onError}) async {
     state = BaseNotifier.setLoading();
     final data = await PaymentServices.getBalance();
     if (data.success is String) {
@@ -14,11 +15,13 @@ class GetBalanceProvider extends StateNotifier<BaseNotifier<String>> {
       if (onSuccess != null) {
         onSuccess();
       }
+      return true;
     } else {
       state = BaseNotifier.setError(data.error ?? "An error ocurred");
       if (onError != null) {
         onError(data.error ?? "An error ocurred");
       }
+      return false;
     }
   }
 }

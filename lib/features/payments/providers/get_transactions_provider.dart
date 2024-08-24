@@ -8,7 +8,7 @@ class GetTransactionsProvider
     extends StateNotifier<BaseNotifier<List<TransactionsModel>>> {
   GetTransactionsProvider() : super(BaseNotifier());
 
-  void getTransactions(String id,
+  Future<bool> getTransactions(String id,
       {VoidCallback? onSuccess, Function(String)? onError}) async {
     state = BaseNotifier.setLoading();
     final data = await PaymentServices.getTransactions(id);
@@ -17,11 +17,13 @@ class GetTransactionsProvider
       if (onSuccess != null) {
         onSuccess();
       }
+      return true;
     } else {
       state = BaseNotifier.setError(data.error ?? "An error ocurred");
       if (onError != null) {
         onError(data.error ?? "An error ocurred");
       }
+      return false;
     }
   }
 }

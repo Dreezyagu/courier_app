@@ -121,6 +121,14 @@ class AuthServices {
   static Future<({String? success, String? error})> uploadPicture(
       File file) async {
     try {
+      int bytes = await file.length();
+      final i = bytes / 1048576;
+      if (i > 5) {
+        return (
+          success: null,
+          error: "You cannot upload a file greater than 5MB"
+        );
+      }
       final formData = FormData.fromMap({
         "file": await MultipartFile.fromFile(file.path,
             contentType:
@@ -139,7 +147,7 @@ class AuthServices {
       }
     } on DioException catch (e) {
       ErrorModel? error;
-      if (e.response != null) {
+      if (e.response != null && e.response?.data is Map<String, dynamic>) {
         error = ErrorModel.fromMap(e.response?.data);
       }
       return (success: null, error: error?.message ?? "An error occured");
