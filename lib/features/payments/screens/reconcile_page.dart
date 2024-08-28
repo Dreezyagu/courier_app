@@ -71,17 +71,17 @@ class _ReconcilePageState extends ConsumerState<ReconcilePage> {
                     children: [
                       const TextColumn(
                         title: "Bank",
-                        subtitle: "Wema bank",
+                        subtitle: "Zenith Bank",
                       ),
                       SizedBox(height: context.width(.04)),
                       const TextColumn(
                         title: "Account name",
-                        subtitle: "Ojembaa Logistic company",
+                        subtitle: "Ojembaa Couriers Brokers Ltd",
                       ),
                       SizedBox(height: context.width(.04)),
                       const TextColumn(
                         title: "Account name",
-                        subtitle: "826293200",
+                        subtitle: "1312186806",
                       ),
                     ],
                   )),
