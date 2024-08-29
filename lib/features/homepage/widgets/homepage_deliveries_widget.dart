@@ -51,10 +51,7 @@ class _HomepageDeliveriesWidgetState
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AssetIcon(
-                  icon: "menu",
-                  size: context.width(.04),
-                ),
+                const SizedBox(width: 36),
                 Consumer(builder: (context, ref, child) {
                   final userData = ref.watch(userProvider).data;
                   final locationData = ref.watch(getLocationProvider).data;
